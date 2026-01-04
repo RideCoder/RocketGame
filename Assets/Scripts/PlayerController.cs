@@ -21,26 +21,34 @@ public class PlayerController : MonoBehaviour
 
     public void Update()
     {
-        if (Mouse.current.leftButton.isPressed)
+        if (!GameManager.playerDead)
         {
-            propulsion.relativeForce = new Vector3(0f, 30f, 0f);
-            particleSystem.enableEmission = true;
-       
+            if (Mouse.current.leftButton.isPressed)
+            {
+                propulsion.relativeForce = new Vector3(0f, 30f, 0f);
+                particleSystem.enableEmission = true;
 
+
+            }
+            else
+            {
+                propulsion.relativeForce = new Vector3(0f, 0f, 0f);
+                particleSystem.enableEmission = false;
+
+            }
+
+            /*   if (Keyboard.current.rKey.isPressed)
+               {
+                   rocket.transform.position = new Vector3(.5f, 4.35f, -6.5f);
+                   rocket.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
+               }
+            */
         }
-        else
+        if (GameManager.playerDead)
         {
             propulsion.relativeForce = new Vector3(0f, 0f, 0f);
             particleSystem.enableEmission = false;
-
         }
-
-        if (Keyboard.current.rKey.isPressed)
-        {
-            rocket.transform.position = new Vector3(.5f, 4.35f, -6.5f);
-            rocket.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
-        }
-
     }
 
     void FixedUpdate()
@@ -55,6 +63,7 @@ public class PlayerController : MonoBehaviour
 
         Quaternion target = Quaternion.Euler((1f - normalizedMouseY * 360f) - 90f, ((normalizedMouseX) * 360f) - 180f, 0f);
         //  if (Mouse.current.rightButton.isPressed)
+        if (!GameManager.playerDead)
         {
             rocket.transform.rotation = target;
             rocket.GetComponent<Rigidbody>().angularVelocity = new Vector3(0f, 0f, 0f);
@@ -64,7 +73,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    private void OnGUI()
+   /* private void OnGUI()
     {
         int screenWidth = Screen.width;
         int screenHeight = Screen.height;
@@ -72,11 +81,7 @@ public class PlayerController : MonoBehaviour
         float normalizedMouseX = MousePos.x / screenWidth;
         float normalizedMouseY = MousePos.y / screenHeight;
         GUI.Label(new Rect(10, 10, 200, 100), "X: " + normalizedMouseX.ToString() + " Y: " + normalizedMouseY.ToString());
-    }
+    }*/
 
-    private void OnCollisionEnter(UnityEngine.Collision collision)
-    {
-        rocket.transform.position = new Vector3(.5f, 4.35f, -6.5f);
-        rocket.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
-    }
+  
 }
