@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
 
         if (Keyboard.current.rKey.isPressed)
         {
-            rocket.transform.position = new Vector3(.5f, .35f, .5f);
+            rocket.transform.position = new Vector3(.5f, 4.35f, -6.5f);
             rocket.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
         }
 
@@ -72,5 +72,11 @@ public class PlayerController : MonoBehaviour
         float normalizedMouseX = MousePos.x / screenWidth;
         float normalizedMouseY = MousePos.y / screenHeight;
         GUI.Label(new Rect(10, 10, 200, 100), "X: " + normalizedMouseX.ToString() + " Y: " + normalizedMouseY.ToString());
+    }
+
+    private void OnCollisionEnter(UnityEngine.Collision collision)
+    {
+        rocket.transform.position = new Vector3(.5f, 4.35f, -6.5f);
+        rocket.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
     }
 }
