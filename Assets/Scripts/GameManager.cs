@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Player.OnPlayerDeath += PlayerDeath;
+        Player.OnPlayerTouchGoal += PlayerWin;
         elapsedTime = 0f;
         attempts = 0;
     }
@@ -31,7 +32,7 @@ public class GameManager : MonoBehaviour
 
        
 
-        if (Keyboard.current.rKey.isPressed && playerDead)
+        if (Mouse.current.leftButton.wasPressedThisFrame && playerDead)
         {
             Debug.Log("TEST");
             playerDead = false;
@@ -63,5 +64,10 @@ public class GameManager : MonoBehaviour
         playerDead = true;
         timerRunning = false;
         // timerRunning = false; // Stop timer on death
+    }
+
+    public void PlayerWin()
+    {
+
     }
 }

@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     public GameObject rocket;
     private ConstantForce propulsion;
     public ParticleSystem particleSystem;
+    public AudioSource audio;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -27,6 +28,7 @@ public class PlayerController : MonoBehaviour
             {
                 propulsion.relativeForce = new Vector3(0f, 30f, 0f);
                 particleSystem.enableEmission = true;
+                audio.mute = false;
 
 
             }
@@ -34,6 +36,7 @@ public class PlayerController : MonoBehaviour
             {
                 propulsion.relativeForce = new Vector3(0f, 0f, 0f);
                 particleSystem.enableEmission = false;
+                audio.mute = true;
 
             }
 
@@ -48,11 +51,8 @@ public class PlayerController : MonoBehaviour
         {
             propulsion.relativeForce = new Vector3(0f, 0f, 0f);
             particleSystem.enableEmission = false;
+            audio.mute = true;
         }
-    }
-
-    void FixedUpdate()
-    {
 
         MousePos = Mouse.current.position.ReadValue();
         int screenWidth = Screen.width;
@@ -69,6 +69,12 @@ public class PlayerController : MonoBehaviour
             rocket.GetComponent<Rigidbody>().angularVelocity = new Vector3(0f, 0f, 0f);
         }
 
+    }
+
+    void FixedUpdate()
+    {
+
+     
 
 
     }
