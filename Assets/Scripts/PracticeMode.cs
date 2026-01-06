@@ -24,6 +24,7 @@ public class PracticeMode : MonoBehaviour
             {
                 GameObject clone = Instantiate(practiceCheckpoint);
                 clone.transform.position = player.transform.position;
+                clone.GetComponent<Checkpoint>().velocity = player.GetComponent<Rigidbody>().linearVelocity;
                 practiceCheckpoints.Add(practiceCheckpoints.Count + 1, clone);
 
             }

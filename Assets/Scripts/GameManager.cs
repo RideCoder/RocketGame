@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
             {
                 Debug.Log("TEST");
                 playerDead = false;
+                player.rocket.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
                 if (PracticeMode.practiceCheckpoints.Count <= 0)
                 {
                     player.rocket.transform.position = new Vector3(0.5f, 4.35f, -6.5f);
@@ -47,9 +48,11 @@ public class GameManager : MonoBehaviour
                 {
                     PracticeMode.practiceCheckpoints.TryGetValue(PracticeMode.practiceCheckpoints.Count, out GameObject practiceCheckpoint);
                     player.rocket.transform.position = practiceCheckpoint.transform.position;
+                   
+                    player.rocket.GetComponent<Rigidbody>().linearVelocity = practiceCheckpoint.GetComponent<Checkpoint>().velocity;
                 }
 
-                player.rocket.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
+                
                 deathText.enabled = false;
                 elapsedTime = 0f;     // Reset timer on death
                 attempts += 1;

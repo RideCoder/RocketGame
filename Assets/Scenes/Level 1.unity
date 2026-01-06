@@ -202,7 +202,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PracticeMode
   practiceCheckpoint: {fileID: 3659071152678568415, guid: ccf67c7f7ff783a4f9776c6a2ac178be, type: 3}
-  player: {fileID: 2057066299}
+  player: {fileID: 1934136902}
 --- !u!1 &129489834
 GameObject:
   m_ObjectHideFlags: 0
