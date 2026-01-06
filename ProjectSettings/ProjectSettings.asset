@@ -837,7 +837,7 @@ PlayerSettings:
     PS5: RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_6;RealtimeCSG_1_6_01
     QNX: RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_6;RealtimeCSG_1_6_01
     ReservedCFE: RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_6;RealtimeCSG_1_6_01
-    Standalone: RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_6;RealtimeCSG_1_6_01;PROBUILDER_EXPERIMENTAL_FEATURES
+    Standalone: RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_6;RealtimeCSG_1_6_01;PROBUILDER_EXPERIMENTAL_FEATURES;UNITY_PIPELINE_URP
     VisionOS: RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_6;RealtimeCSG_1_6_01
     WebGL: RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_6;RealtimeCSG_1_6_01
     XboxOne: RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_6;RealtimeCSG_1_6_01

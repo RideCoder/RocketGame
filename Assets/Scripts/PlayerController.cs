@@ -22,7 +22,9 @@ public class PlayerController : MonoBehaviour
 
     public void Update()
     {
-        if (!GameManager.playerDead)
+        if (!UIManager.IsPaused)
+        {
+            if (!GameManager.playerDead)
         {
             if (Mouse.current.leftButton.isPressed)
             {
@@ -65,8 +67,10 @@ public class PlayerController : MonoBehaviour
         //  if (Mouse.current.rightButton.isPressed)
         if (!GameManager.playerDead)
         {
-            rocket.transform.rotation = target;
-            rocket.GetComponent<Rigidbody>().angularVelocity = new Vector3(0f, 0f, 0f);
+            
+                rocket.transform.rotation = target;
+                rocket.GetComponent<Rigidbody>().angularVelocity = new Vector3(0f, 0f, 0f);
+            }
         }
 
     }

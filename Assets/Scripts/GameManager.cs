@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     public TMP_Text timeText;
     public TMP_Text attemptsText;
     public TMP_Text deathText;
+    public TMP_Text winText;
     public int attempts;
 
     private float elapsedTime;
@@ -23,26 +24,38 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (timerRunning)
+        if (!UIManager.IsPaused)
         {
-            elapsedTime += Time.deltaTime;
-            timeText.text = FormatTime(elapsedTime);
-        }
-           
+            if (timerRunning)
+            {
+                elapsedTime += Time.deltaTime;
+                timeText.text = FormatTime(elapsedTime);
+            }
 
-       
 
-        if (Mouse.current.leftButton.wasPressedThisFrame && playerDead)
-        {
-            Debug.Log("TEST");
-            playerDead = false;
-             player.rocket.transform.position = new Vector3(0.5f, 4.35f, -6.5f);
-         player.rocket.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
-            deathText.enabled = false;
-            elapsedTime = 0f;     // Reset timer on death
-            attempts += 1;
-            attemptsText.text = "Attempts: " + attempts.ToString();
-            timerRunning = true;
+
+
+            if (Mouse.current.leftButton.wasPressedThisFrame && playerDead)
+            {
+                Debug.Log("TEST");
+                playerDead = false;
+                if (PracticeMode.practiceCheckpoints.Count <= 0)
+                {
+                    player.rocket.transform.position = new Vector3(0.5f, 4.35f, -6.5f);
+                }
+                else
+                {
+                    PracticeMode.practiceCheckpoints.TryGetValue(PracticeMode.practiceCheckpoints.Count, out GameObject practiceCheckpoint);
+                    player.rocket.transform.position = practiceCheckpoint.transform.position;
+                }
+
+                player.rocket.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
+                deathText.enabled = false;
+                elapsedTime = 0f;     // Reset timer on death
+                attempts += 1;
+                attemptsText.text = "Attempts: " + attempts.ToString();
+                timerRunning = true;
+            }
         }
     }
 
@@ -68,6 +81,10 @@ public class GameManager : MonoBehaviour
 
     public void PlayerWin()
     {
+        timerRunning = false;
+        winText.enabled = true;
+        player.rocket.GetComponent<Rigidbody>().isKinematic = true;
 
+        winText.text = "<Time: "+ FormatTime(elapsedTime)+">";
     }
 }
