@@ -16,12 +16,21 @@ public class GameManager : MonoBehaviour
     public static bool playerDead = false;
     void Start()
     {
-        Player.OnPlayerDeath += PlayerDeath;
-        Player.OnPlayerTouchGoal += PlayerWin;
+       
         elapsedTime = 0f;
         attempts = 0;
     }
+    void OnEnable()
+    {
+        Player.OnPlayerDeath += PlayerDeath;
+        Player.OnPlayerTouchGoal += PlayerWin;
+    }
 
+    void OnDisable()
+    {
+        Player.OnPlayerDeath -= PlayerDeath;
+        Player.OnPlayerTouchGoal -= PlayerWin;
+    }
     void Update()
     {
         if (!UIManager.IsPaused)
