@@ -22,6 +22,13 @@ public class UIManager : MonoBehaviour
         menu.SetActive(true);
     }
 
+    public void CloseAllMenus()
+    {
+        foreach (var m in menus)
+        {
+            m.SetActive(false);
+        }
+    }
 
     public void Update()
     {
