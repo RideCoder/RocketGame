@@ -37,6 +37,7 @@ public class EditorCameraController : MonoBehaviour
         if (Keyboard.current.sKey.isPressed) dir -= transform.forward;
         if (Keyboard.current.aKey.isPressed) dir -= transform.right;
         if (Keyboard.current.dKey.isPressed) dir += transform.right;
+        if (Keyboard.current.spaceKey.isPressed) dir += transform.up;
         if (Keyboard.current.leftShiftKey.isPressed)
         {
             multiplier = 2f;

@@ -24,7 +24,7 @@ public class LoadLevel : MonoBehaviour
     void Start()
     {
 
-        string path = Path.Combine(Application.streamingAssetsPath, "Levels/Custom Level.json");
+        string path = Path.Combine(Application.streamingAssetsPath, "Levels/"+LevelSelection.SelectedLevel);
 
         if (!File.Exists(path))
         {

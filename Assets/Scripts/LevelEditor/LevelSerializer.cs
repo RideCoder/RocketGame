@@ -1,17 +1,21 @@
 using System.Collections.Generic;
 using System.IO;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class LevelSerializer : MonoBehaviour
 {
     public Transform levelParent;
 
-
-    public void Save(string fileName)
+    public TMP_InputField inputField;
+    public void Save()
     {
+        Debug.Log("WHAT");
 
         LevelData level = new LevelData();
-        level.levelName = "Custom Level";
+        level.levelName = inputField.text;
+        Debug.Log(level.levelName);
         level.gravity = -9.81f;
 
         List<LevelObjectData> objects = new();
@@ -34,7 +38,8 @@ public class LevelSerializer : MonoBehaviour
 
         level.objects = objects.ToArray();
             string json = JsonUtility.ToJson(level, true);
-        string path = Path.Combine(Application.streamingAssetsPath, "Levels", fileName+".json");
+        
+        string path = Path.Combine(Application.streamingAssetsPath, "Levels", inputField.text + ".json");
         File.WriteAllText(path, json);
         Debug.Log("Saved level to " + path);
 

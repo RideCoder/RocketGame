@@ -61,7 +61,14 @@ public class UIManager : MonoBehaviour
 
     public void GoToTitleScreen()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene("Main Menu");
+    }
+
+    public void GoToScene(string sceneName)
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene(sceneName);
     }
 
 
