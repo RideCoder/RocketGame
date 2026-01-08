@@ -1,0 +1,36 @@
+{
+  "levelName": "Stair Test",
+  "gravity": -9.81,
+  "objects": [
+    {
+      "type": "Block",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    {
+      "type": "Block",
+      "x": 2,
+      "y": 1,
+      "z": 0
+    },
+    {
+      "type": "Block",
+      "x": 4,
+      "y": 2,
+      "z": 0
+    },
+    {
+      "type": "Block",
+      "x": 6,
+      "y": 3,
+      "z": 0
+    },
+    {
+      "type": "Block",
+      "x": 8,
+      "y": 4,
+      "z": 0
+    }
+  ]
+}

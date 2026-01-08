@@ -1782,6 +1782,7 @@ MonoBehaviour:
   - {fileID: 1829517530}
   - {fileID: 642292976}
   - {fileID: 2131016085}
+  escMenu: {fileID: 0}
 --- !u!4 &1512265320
 Transform:
   m_ObjectHideFlags: 0
@@ -1992,9 +1993,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Customize Player
-
-'
+  m_text: Level Editor
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 053d94d27defb834783eb4e8a5c9c45f, type: 2}
   m_sharedMaterial: {fileID: 5597295831605777399, guid: 053d94d27defb834783eb4e8a5c9c45f, type: 2}
@@ -2364,7 +2363,7 @@ GameObject:
   - component: {fileID: 2131016088}
   - component: {fileID: 2131016087}
   m_Layer: 5
-  m_Name: Customize Player
+  m_Name: Level Editor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
