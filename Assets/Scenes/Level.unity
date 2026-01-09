@@ -2269,7 +2269,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LoadLevel
   levelParent: {fileID: 634769940}
-  block: {fileID: 4700267117421785558, guid: 58576d2d4a56ea24684b1d6025fa739b, type: 3}
+  levelObjects:
+  - {fileID: 4700267117421785558, guid: 58576d2d4a56ea24684b1d6025fa739b, type: 3}
+  - {fileID: 4700267117421785558, guid: db74d57d0536e5447b8bff1145fd4f74, type: 3}
 --- !u!4 &498625557
 Transform:
   m_ObjectHideFlags: 0

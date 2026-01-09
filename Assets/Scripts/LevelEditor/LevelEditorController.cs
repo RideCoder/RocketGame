@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,7 +7,8 @@ public class LevelEditorController : MonoBehaviour
     [Header("References")]
     public Camera editorCamera;
     public Transform levelParent;
-    public GameObject blockPrefab;
+    public static GameObject selectedObject;
+    public GameObject startObject;
 
     [Header("Placement Settings")]
     public float gridSize = 1f;
@@ -18,25 +20,84 @@ public class LevelEditorController : MonoBehaviour
     GameObject ghost;
     MeshRenderer ghostRenderer;
 
+    
+
+    public enum Mode
+    {
+        Select,
+        Place
+    }
+
+    public Mode currentMode;
+
+    public void SetSelectMode()
+    {
+        ghost.SetActive(false);
+        currentMode = Mode.Select;
+    }
+
+    public void SetPlaceMode()
+    {
+        currentMode = Mode.Place;
+    }
+
+
     void Start()
     {
+
+        LoadObjectList.OnObjectSelected += UpdateSelected;
+        selectedObject = startObject;
+            CreateGhost();
+        
+       
+    }
+    
+    void Update()
+    {
+        if (currentMode == Mode.Place)
+        {
+            UpdateGhost();
+
+            if (Mouse.current.leftButton.wasPressedThisFrame)
+                PlaceBlock();
+        }
+        if (currentMode == Mode.Select)
+        {
+
+           
+            if (Mouse.current.leftButton.wasPressedThisFrame)
+                SelectBlock();
+        }
+
+    }
+
+    void SelectBlock()
+    {
+       
+
+        
+        Ray ray = editorCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+
+        if (Physics.Raycast(ray, out RaycastHit hit, 100f, placementMask))
+        {
+            if (hit.collider.gameObject.TryGetComponent<LevelObject>(out LevelObject levelObject))
+            {
+                Debug.Log(levelObject.transform.position);
+            }
+
+        }
+    }
+
+    public void UpdateSelected(GameObject obj)
+    {
+       
+        selectedObject = obj;
         CreateGhost();
     }
 
-    void Update()
-    {
-        UpdateGhost();
-
-        if (Mouse.current.leftButton.wasPressedThisFrame)
-            PlaceBlock();
-    }
-
-    // -------------------------------
-    // Ghost Creation
-    // -------------------------------
     void CreateGhost()
     {
-        ghost = Instantiate(blockPrefab);
+        ghost = Instantiate(selectedObject);
         ghost.name = "GhostBlock";
 
         ghostRenderer = ghost.GetComponent<MeshRenderer>();
@@ -44,7 +105,7 @@ public class LevelEditorController : MonoBehaviour
 
         foreach (var col in ghost.GetComponentsInChildren<Collider>())
             col.enabled = false;
-
+        
         ghost.layer = LayerMask.NameToLayer("Ignore Raycast");
     }
 
@@ -81,8 +142,7 @@ public class LevelEditorController : MonoBehaviour
 
         Vector3 pos = ghost.transform.position;
 
-        Instantiate(blockPrefab, pos, Quaternion.identity, levelParent)
-            .GetComponent<LevelObject>().type = "Block";
+        Instantiate(selectedObject, pos, Quaternion.identity, levelParent);
     }
 
     // -------------------------------

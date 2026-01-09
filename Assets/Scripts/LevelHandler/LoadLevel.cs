@@ -8,7 +8,7 @@ public class LoadLevel : MonoBehaviour
 
     public GameObject levelParent;
     [Header("Prefabs")]
-    public GameObject block;
+    public GameObject[] levelObjects;
 
 
 
@@ -16,10 +16,15 @@ public class LoadLevel : MonoBehaviour
 
     private void Awake()
     {
-        prefabMap = new Dictionary<string, GameObject>
+
+
+        prefabMap = new Dictionary<string, GameObject>();
+
+        foreach (var obj in levelObjects)
         {
-            {"Block", block }
-        };
+            prefabMap.Add(obj.GetComponent<LevelObject>().type, obj);
+        }
+       
     }
     void Start()
     {
