@@ -124,4 +124,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2300677841470aa44a89f7c580d85e8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelObject
-  type: Cube
+  type: Block

@@ -80,7 +80,7 @@ public class LevelEditorController : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, 100f, placementMask))
         {
-            if (hit.collider.gameObject.TryGetComponent<LevelObject>(out LevelObject levelObject))
+            if (hit.collider.gameObject.TryGetComponent(out LevelObject levelObject))
             {
                 Debug.Log(levelObject.transform.position);
             }
