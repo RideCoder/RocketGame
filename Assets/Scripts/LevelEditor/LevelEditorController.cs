@@ -19,7 +19,8 @@ public class LevelEditorController : MonoBehaviour
 
     GameObject ghost;
     MeshRenderer ghostRenderer;
-
+    public GameObject positionGizmo;
+    public static GameObject targetObject;
     
 
     public enum Mode
@@ -54,6 +55,7 @@ public class LevelEditorController : MonoBehaviour
     
     void Update()
     {
+        
         if (currentMode == Mode.Place)
         {
             UpdateGhost();
@@ -80,9 +82,25 @@ public class LevelEditorController : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, 100f, placementMask))
         {
+            if (hit.collider.gameObject.transform.parent.TryGetComponent(out Gizmo gizmo))
+            {
+                Debug.Log(hit.collider.gameObject.transform.parent.name);
+                Debug.Log(gizmo.name);
+                GizmoHandler.GizmoSelected(gizmo.gameObject);
+                return;
+            }
             if (hit.collider.gameObject.TryGetComponent(out LevelObject levelObject))
             {
+                positionGizmo.transform.position = levelObject.gameObject.transform.position;
+                positionGizmo.SetActive(true);
+                targetObject = levelObject.gameObject;
                 Debug.Log(levelObject.transform.position);
+            }
+            else
+            {
+                GizmoHandler.GizmoUnselected();
+                positionGizmo.SetActive(false);
+                targetObject = null;
             }
 
         }

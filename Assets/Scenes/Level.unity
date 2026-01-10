@@ -2272,6 +2272,7 @@ MonoBehaviour:
   levelObjects:
   - {fileID: 4700267117421785558, guid: 58576d2d4a56ea24684b1d6025fa739b, type: 3}
   - {fileID: 4700267117421785558, guid: db74d57d0536e5447b8bff1145fd4f74, type: 3}
+  - {fileID: 4700267117421785558, guid: 078d7dd960d3198498d484cb984b8a14, type: 3}
 --- !u!4 &498625557
 Transform:
   m_ObjectHideFlags: 0
