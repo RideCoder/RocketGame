@@ -16,4 +16,7 @@ public class LevelObjectData
     public float x;
     public float y;
     public float z;
+    public float xScale;
+    public float yScale;
+    public float zScale;
 }

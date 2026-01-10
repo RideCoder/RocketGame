@@ -64,8 +64,9 @@ public class LoadLevel : MonoBehaviour
             
 
             Vector3 position = new Vector3(obj.x, obj.y, obj.z);
-
-            Instantiate(objPrefab,position,Quaternion.identity,levelParent.transform);
+            Vector3 scale = new Vector3(obj.xScale, obj.yScale, obj.zScale);
+            GameObject newObject = Instantiate(objPrefab,position,Quaternion.identity,levelParent.transform);
+            newObject.transform.localScale = scale;
         }
     }
 

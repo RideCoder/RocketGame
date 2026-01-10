@@ -55,13 +55,13 @@ public class LevelEditorController : MonoBehaviour
     
     void Update()
     {
-        
+    
         if (currentMode == Mode.Place)
         {
             UpdateGhost();
-
             if (Mouse.current.leftButton.wasPressedThisFrame)
                 PlaceBlock();
+        
         }
         if (currentMode == Mode.Select)
         {

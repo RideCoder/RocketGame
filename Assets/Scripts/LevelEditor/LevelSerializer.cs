@@ -26,13 +26,18 @@ public class LevelSerializer : MonoBehaviour
             if (!lo) continue;
 
             Vector3 p = child.position;
+            Vector3 scale = child.localScale;
 
             objects.Add(new LevelObjectData
             {
                 type = lo.type,
                 x = p.x,
                 y = p.y,
-                z = p.z
+                z = p.z,
+                xScale = scale.x,
+                yScale = scale.y,
+                zScale = scale.z
+                
             });
         }
 
