@@ -27,6 +27,7 @@ public class LevelSerializer : MonoBehaviour
 
             Vector3 p = child.position;
             Vector3 scale = child.localScale;
+            Vector3 rotation = child.eulerAngles;
 
             objects.Add(new LevelObjectData
             {
@@ -36,8 +37,10 @@ public class LevelSerializer : MonoBehaviour
                 z = p.z,
                 xScale = scale.x,
                 yScale = scale.y,
-                zScale = scale.z
-                
+                zScale = scale.z,
+                xRotation = rotation.x,
+                yRotation = rotation.y,
+                zRotation = rotation.z
             });
         }
 

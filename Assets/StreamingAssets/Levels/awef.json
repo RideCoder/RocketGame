@@ -1,0 +1,114 @@
+{
+    "levelName": "awef",
+    "gravity": -9.8100004196167,
+    "objects": [
+        {
+            "type": "Block",
+            "x": -1.0,
+            "y": 1.0,
+            "z": 0.0,
+            "xScale": 9.455991744995118,
+            "yScale": 3.1115148067474367,
+            "zScale": 9.89248275756836,
+            "xRotation": 0.0,
+            "yRotation": 139.88699340820313,
+            "zRotation": 0.0
+        },
+        {
+            "type": "Sphere",
+            "x": -1.0,
+            "y": 3.0,
+            "z": -1.0,
+            "xScale": 1.0,
+            "yScale": 1.0,
+            "zScale": 1.0,
+            "xRotation": 0.0,
+            "yRotation": 0.0,
+            "zRotation": 0.0
+        },
+        {
+            "type": "Diamond",
+            "x": -3.0,
+            "y": 3.0,
+            "z": -3.0,
+            "xScale": 1.0,
+            "yScale": 1.0,
+            "zScale": 1.0,
+            "xRotation": 34.539981842041019,
+            "yRotation": 0.0,
+            "zRotation": 0.0
+        },
+        {
+            "type": "Diamond",
+            "x": -3.0,
+            "y": 1.0,
+            "z": -6.0,
+            "xScale": 1.0,
+            "yScale": 1.0,
+            "zScale": 1.0,
+            "xRotation": 0.0,
+            "yRotation": 0.0,
+            "zRotation": 0.0
+        },
+        {
+            "type": "Diamond",
+            "x": -6.0,
+            "y": 1.0,
+            "z": -2.0,
+            "xScale": 1.0,
+            "yScale": 1.0,
+            "zScale": 1.0,
+            "xRotation": 0.0,
+            "yRotation": 0.0,
+            "zRotation": 0.0
+        },
+        {
+            "type": "Diamond",
+            "x": -7.0,
+            "y": 2.0,
+            "z": 2.0,
+            "xScale": 1.0,
+            "yScale": 1.0,
+            "zScale": 1.0,
+            "xRotation": 0.0,
+            "yRotation": 0.0,
+            "zRotation": 0.0
+        },
+        {
+            "type": "Diamond",
+            "x": -4.0,
+            "y": 3.0,
+            "z": 0.9999999403953552,
+            "xScale": 1.0,
+            "yScale": 1.0,
+            "zScale": 1.0,
+            "xRotation": 0.0,
+            "yRotation": 0.0,
+            "zRotation": 0.0
+        },
+        {
+            "type": "Diamond",
+            "x": -14.0,
+            "y": 1.0,
+            "z": -6.0,
+            "xScale": 1.0,
+            "yScale": 1.0,
+            "zScale": 1.0,
+            "xRotation": 0.0,
+            "yRotation": 0.0,
+            "zRotation": 0.0
+        },
+        {
+            "type": "Diamond",
+            "x": -4.0,
+            "y": 3.0,
+            "z": 2.0,
+            "xScale": 2.6106948852539064,
+            "yScale": 11.21518325805664,
+            "zScale": 0.09173980355262757,
+            "xRotation": 46.48518371582031,
+            "yRotation": 163.37181091308595,
+            "zRotation": -0.0000018599595250634594
+        }
+    ]
+}

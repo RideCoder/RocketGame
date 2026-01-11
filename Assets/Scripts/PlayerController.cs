@@ -1,97 +1,84 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+
 public class PlayerController : MonoBehaviour
 {
-
     Vector2 MousePos;
+
     public GameObject rocket;
+    private Rigidbody rb;
     private ConstantForce propulsion;
+
     public ParticleSystem particleSystem;
     public AudioSource audio;
 
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-
-    // Update is called once per frame
+    [Header("Movement")]
+    public float forwardSpeed = 3f;   // CONSTANT Geometry Dash speed
+    public float thrustForce = 60f;    // Upward force when holding input
 
     private void Start()
     {
+        rb = rocket.GetComponent<Rigidbody>();
         propulsion = rocket.GetComponent<ConstantForce>();
-        rocket.GetComponent<Rigidbody>().maxLinearVelocity = 30f;
+
+      //  rb.useGravity = false;
+        rb.maxLinearVelocity = Mathf.Infinity;
     }
 
-    public void Update()
+    void Update()
     {
-        if (!UIManager.IsPaused)
+        if (UIManager.IsPaused || GameManager.playerDead)
         {
-            if (!GameManager.playerDead)
-        {
-            if (Mouse.current.leftButton.isPressed)
-            {
-                propulsion.relativeForce = new Vector3(0f, 30f, 0f);
-                particleSystem.enableEmission = true;
-                audio.mute = false;
-
-
-            }
-            else
-            {
-                propulsion.relativeForce = new Vector3(0f, 0f, 0f);
-                particleSystem.enableEmission = false;
-                audio.mute = true;
-
-            }
-
-            /*   if (Keyboard.current.rKey.isPressed)
-               {
-                   rocket.transform.position = new Vector3(.5f, 4.35f, -6.5f);
-                   rocket.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
-               }
-            */
+            propulsion.relativeForce = Vector3.zero;
+            particleSystem.enableEmission = false;
+            audio.mute = true;
+            return;
         }
-        if (GameManager.playerDead)
+
+        // Thrust (hold to go up)
+        if (Mouse.current.leftButton.isPressed)
         {
-            propulsion.relativeForce = new Vector3(0f, 0f, 0f);
+            propulsion.relativeForce = new Vector3(0f, thrustForce, 0f);
+            particleSystem.enableEmission = true;
+            audio.mute = false;
+        }
+        else
+        {
+            propulsion.relativeForce = Vector3.zero;
             particleSystem.enableEmission = false;
             audio.mute = true;
         }
 
+        // Rotation (your existing mouse-based rotation)
         MousePos = Mouse.current.position.ReadValue();
-        int screenWidth = Screen.width;
-        int screenHeight = Screen.height;
+        float normalizedMouseX = MousePos.x / Screen.width;
+        float normalizedMouseY = MousePos.y / Screen.height;
+        
+        Quaternion target = Quaternion.Euler(
+            (1f - normalizedMouseY) * 360f - 90f,
+            normalizedMouseX * 360f - 180f,
+            0f
+        );
+       // float yaw = normalizedMouseX * 180f - 90f; // range -90 to +90
+       // float pitch = (1f - normalizedMouseY) * 180f;
 
-        float normalizedMouseX = MousePos.x / screenWidth;
-        float normalizedMouseY = MousePos.y / screenHeight;
+        // Clamp pitch if desired
+      //  pitch = Mathf.Clamp(pitch, 0f, 180f);
 
-        Quaternion target = Quaternion.Euler((1f - normalizedMouseY * 360f) - 90f, ((normalizedMouseX) * 360f) - 180f, 0f);
-        //  if (Mouse.current.rightButton.isPressed)
-        if (!GameManager.playerDead)
-        {
-            
-                rocket.transform.rotation = target;
-                rocket.GetComponent<Rigidbody>().angularVelocity = new Vector3(0f, 0f, 0f);
-            }
-        }
+       // Quaternion target = Quaternion.Euler(pitch, yaw, 0f);
 
+        rocket.transform.rotation = target;
+        rb.angularVelocity = Vector3.zero;
     }
 
     void FixedUpdate()
     {
+        if (UIManager.IsPaused || GameManager.playerDead)
+            return;
 
-     
-
-
+        // FORCE constant forward speed (Geometry Dash behavior)
+        Vector3 velocity = rb.linearVelocity;
+        velocity.z = forwardSpeed;
+        rb.linearVelocity = velocity;
     }
-
-   /* private void OnGUI()
-    {
-        int screenWidth = Screen.width;
-        int screenHeight = Screen.height;
-
-        float normalizedMouseX = MousePos.x / screenWidth;
-        float normalizedMouseY = MousePos.y / screenHeight;
-        GUI.Label(new Rect(10, 10, 200, 100), "X: " + normalizedMouseX.ToString() + " Y: " + normalizedMouseY.ToString());
-    }*/
-
-  
 }

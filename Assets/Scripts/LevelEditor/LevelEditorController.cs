@@ -1,6 +1,9 @@
+using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEditor.PlayerSettings;
 
 public class LevelEditorController : MonoBehaviour
 {
@@ -20,7 +23,7 @@ public class LevelEditorController : MonoBehaviour
     GameObject ghost;
     MeshRenderer ghostRenderer;
     public GameObject positionGizmo;
-    public static GameObject targetObject;
+    public static List<GameObject> targetObjects = new List<GameObject>(); 
     
 
     public enum Mode
@@ -66,7 +69,28 @@ public class LevelEditorController : MonoBehaviour
         if (currentMode == Mode.Select)
         {
 
-           
+           if (targetObjects.Count != 0 && Keyboard.current.leftCtrlKey.isPressed && Keyboard.current.dKey.wasPressedThisFrame)
+            {
+                foreach (GameObject targetObject in targetObjects)
+                {
+                    GameObject duplicatedObj = Instantiate(targetObject, targetObject.transform.position, targetObject.transform.rotation, levelParent);
+                }
+                
+                //Instantiate(targetObject);
+            }
+
+            if (targetObjects.Count != 0 && Keyboard.current.deleteKey.wasPressedThisFrame)
+            {
+                foreach (GameObject targetObject in targetObjects)
+                {
+                    Destroy(targetObject);
+                    targetObjects.Clear();
+                    GizmoHandler.GizmoUnselected();
+                    positionGizmo.SetActive(false);
+                }
+
+                //Instantiate(targetObject);
+            }
             if (Mouse.current.leftButton.wasPressedThisFrame)
                 SelectBlock();
         }
@@ -84,8 +108,7 @@ public class LevelEditorController : MonoBehaviour
         {
             if (hit.collider.gameObject.transform.parent.TryGetComponent(out Gizmo gizmo))
             {
-                Debug.Log(hit.collider.gameObject.transform.parent.name);
-                Debug.Log(gizmo.name);
+              
                 GizmoHandler.GizmoSelected(gizmo.gameObject);
                 return;
             }
@@ -93,14 +116,14 @@ public class LevelEditorController : MonoBehaviour
             {
                 positionGizmo.transform.position = levelObject.gameObject.transform.position;
                 positionGizmo.SetActive(true);
-                targetObject = levelObject.gameObject;
+                targetObjects.Add(levelObject.gameObject);
                 Debug.Log(levelObject.transform.position);
             }
             else
             {
                 GizmoHandler.GizmoUnselected();
                 positionGizmo.SetActive(false);
-                targetObject = null;
+                targetObjects.Clear();
             }
 
         }

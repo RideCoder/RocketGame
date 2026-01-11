@@ -1,0 +1,78 @@
+{
+    "levelName": "LINES",
+    "gravity": -9.8100004196167,
+    "objects": [
+        {
+            "type": "Block",
+            "x": -2.0,
+            "y": -1.0,
+            "z": -9.0,
+            "xScale": 1.0,
+            "yScale": 1.0,
+            "zScale": 1.0,
+            "xRotation": 0.0,
+            "yRotation": 0.0,
+            "zRotation": 0.0
+        },
+        {
+            "type": "Block",
+            "x": 8.804464340209961,
+            "y": 4.735400199890137,
+            "z": -3.0,
+            "xScale": 1.0,
+            "yScale": 1.0,
+            "zScale": 8.259056091308594,
+            "xRotation": 29.3533878326416,
+            "yRotation": 325.47857666015627,
+            "zRotation": 180.0
+        },
+        {
+            "type": "Block",
+            "x": 0.0,
+            "y": -1.0,
+            "z": 17.0,
+            "xScale": 1.0,
+            "yScale": 1.0,
+            "zScale": 1.0,
+            "xRotation": 0.0,
+            "yRotation": 0.0,
+            "zRotation": 0.0
+        },
+        {
+            "type": "Block",
+            "x": -2.0,
+            "y": 2.5146005153656008,
+            "z": -3.0,
+            "xScale": 1.0,
+            "yScale": 1.0,
+            "zScale": 8.259056091308594,
+            "xRotation": 29.3533878326416,
+            "yRotation": 325.47857666015627,
+            "zRotation": 180.0
+        },
+        {
+            "type": "Block",
+            "x": 3.837920665740967,
+            "y": 2.5146005153656008,
+            "z": -3.9525513648986818,
+            "xScale": 1.0,
+            "yScale": 1.0,
+            "zScale": 8.259056091308594,
+            "xRotation": 29.3533878326416,
+            "yRotation": 325.47857666015627,
+            "zRotation": 180.0
+        },
+        {
+            "type": "Block",
+            "x": 7.037943363189697,
+            "y": 2.5146005153656008,
+            "z": -3.0,
+            "xScale": 1.0,
+            "yScale": 1.0,
+            "zScale": 8.259056091308594,
+            "xRotation": 29.3533878326416,
+            "yRotation": 325.47857666015627,
+            "zRotation": 180.0
+        }
+    ]
+}

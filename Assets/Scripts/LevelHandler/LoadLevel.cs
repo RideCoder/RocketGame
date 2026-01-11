@@ -65,8 +65,10 @@ public class LoadLevel : MonoBehaviour
 
             Vector3 position = new Vector3(obj.x, obj.y, obj.z);
             Vector3 scale = new Vector3(obj.xScale, obj.yScale, obj.zScale);
+            Vector3 rotation = new Vector3(obj.xRotation, obj.yRotation, obj.zRotation);
             GameObject newObject = Instantiate(objPrefab,position,Quaternion.identity,levelParent.transform);
             newObject.transform.localScale = scale;
+            newObject.transform.eulerAngles = rotation;
         }
     }
 

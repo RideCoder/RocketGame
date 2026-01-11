@@ -1,0 +1,30 @@
+{
+    "levelName": "rotated",
+    "gravity": -9.8100004196167,
+    "objects": [
+        {
+            "type": "Block",
+            "x": -3.0,
+            "y": 1.0,
+            "z": -6.741598606109619,
+            "xScale": 9.7634859085083,
+            "yScale": 1.0,
+            "zScale": 32.823795318603519,
+            "xRotation": 318.7333068847656,
+            "yRotation": 19.388011932373048,
+            "zRotation": 351.8903503417969
+        },
+        {
+            "type": "Block",
+            "x": -2.0,
+            "y": 1.0,
+            "z": 2.0,
+            "xScale": 1.0,
+            "yScale": 1.0,
+            "zScale": 1.0,
+            "xRotation": 0.0,
+            "yRotation": 0.0,
+            "zRotation": 0.0
+        }
+    ]
+}

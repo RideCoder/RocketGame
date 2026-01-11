@@ -19,4 +19,7 @@ public class LevelObjectData
     public float xScale;
     public float yScale;
     public float zScale;
+    public float xRotation;
+    public float yRotation;
+    public float zRotation;
 }
