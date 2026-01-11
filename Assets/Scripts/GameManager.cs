@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     private float elapsedTime;
     private bool timerRunning = true;
     public static bool playerDead = false;
+    public AudioSource music;
     void Start()
     {
        
@@ -67,6 +68,8 @@ public class GameManager : MonoBehaviour
                 attempts += 1;
                 attemptsText.text = "Attempts: " + attempts.ToString();
                 timerRunning = true;
+                
+                music.Play();
             }
         }
     }
@@ -88,6 +91,7 @@ public class GameManager : MonoBehaviour
         deathText.enabled = true;
         playerDead = true;
         timerRunning = false;
+        music.Stop();
         // timerRunning = false; // Stop timer on death
     }
 

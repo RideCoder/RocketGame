@@ -33,17 +33,24 @@ public class EditorCameraController : MonoBehaviour
     {
         Vector3 dir = Vector3.zero;
         float multiplier = 1f;
+
+        // Horizontal movement (relative to rotation)
         if (Keyboard.current.wKey.isPressed) dir += transform.forward;
         if (Keyboard.current.sKey.isPressed) dir -= transform.forward;
         if (Keyboard.current.aKey.isPressed) dir -= transform.right;
-        if (Keyboard.current.dKey.isPressed && !Keyboard.current.leftCtrlKey.isPressed) dir += transform.right;
-        if (Keyboard.current.spaceKey.isPressed) dir += transform.up;
+        if (Keyboard.current.dKey.isPressed && !Keyboard.current.leftCtrlKey.isPressed)
+            dir += transform.right;
+
+        // Vertical movement (world space)
+        if (Keyboard.current.spaceKey.isPressed)
+            dir += Vector3.up;
+
         if (Keyboard.current.leftShiftKey.isPressed)
-        {
-            multiplier = 2f;
-        }
+            dir += Vector3.down;
+
         transform.position += dir * moveSpeed * Time.deltaTime * multiplier;
     }
+
 
     void HandleMouseRotate()
     {

@@ -22,4 +22,6 @@ public class LevelObjectData
     public float xRotation;
     public float yRotation;
     public float zRotation;
+
+    public string jsonData;
 }

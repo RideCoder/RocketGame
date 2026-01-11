@@ -69,6 +69,11 @@ public class LoadLevel : MonoBehaviour
             GameObject newObject = Instantiate(objPrefab,position,Quaternion.identity,levelParent.transform);
             newObject.transform.localScale = scale;
             newObject.transform.eulerAngles = rotation;
+            LevelObject lo = newObject.GetComponent<LevelObject>();
+            if (lo != null)
+            {
+                lo.DeserializeExtraData(obj.jsonData);
+            }
         }
     }
 

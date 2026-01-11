@@ -25,6 +25,8 @@ public class LevelSerializer : MonoBehaviour
             LevelObject lo = child.GetComponent<LevelObject>();
             if (!lo) continue;
 
+
+
             Vector3 p = child.position;
             Vector3 scale = child.localScale;
             Vector3 rotation = child.eulerAngles;
@@ -40,7 +42,8 @@ public class LevelSerializer : MonoBehaviour
                 zScale = scale.z,
                 xRotation = rotation.x,
                 yRotation = rotation.y,
-                zRotation = rotation.z
+                zRotation = rotation.z,
+                jsonData = lo.SerializeExtraData()
             });
         }
 

@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Movement")]
     public float forwardSpeed = 3f;   // CONSTANT Geometry Dash speed
-    public float thrustForce = 60f;    // Upward force when holding input
+    public float thrustForce = 1200f;    // Upward force when holding input
 
     private void Start()
     {

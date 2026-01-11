@@ -84,11 +84,11 @@ public class LevelEditorController : MonoBehaviour
                 foreach (GameObject targetObject in targetObjects)
                 {
                     Destroy(targetObject);
-                    targetObjects.Clear();
+                    
                     GizmoHandler.GizmoUnselected();
                     positionGizmo.SetActive(false);
                 }
-
+                targetObjects.Clear();
                 //Instantiate(targetObject);
             }
             if (Mouse.current.leftButton.wasPressedThisFrame)
@@ -106,6 +106,7 @@ public class LevelEditorController : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, 100f, placementMask))
         {
+            Debug.Log(hit);
             if (hit.collider.gameObject.transform.parent.TryGetComponent(out Gizmo gizmo))
             {
               
@@ -114,9 +115,21 @@ public class LevelEditorController : MonoBehaviour
             }
             if (hit.collider.gameObject.TryGetComponent(out LevelObject levelObject))
             {
-                positionGizmo.transform.position = levelObject.gameObject.transform.position;
-                positionGizmo.SetActive(true);
+               
+                if (!Keyboard.current.leftCtrlKey.isPressed)
+                {
+                    targetObjects.Clear();
+                }
+                
                 targetObjects.Add(levelObject.gameObject);
+                Vector3 avgPos = new Vector3(0, 0, 0);
+                foreach (GameObject obj in targetObjects)
+                {
+                    avgPos += obj.transform.position;
+                }
+                avgPos = avgPos / targetObjects.Count;
+                positionGizmo.transform.position = avgPos;
+                positionGizmo.SetActive(true);
                 Debug.Log(levelObject.transform.position);
             }
             else
@@ -127,6 +140,7 @@ public class LevelEditorController : MonoBehaviour
             }
 
         }
+       
     }
 
     public void UpdateSelected(GameObject obj)
