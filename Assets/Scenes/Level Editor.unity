@@ -5100,6 +5100,7 @@ MonoBehaviour:
   - {fileID: 4700267117421785558, guid: db74d57d0536e5447b8bff1145fd4f74, type: 3}
   - {fileID: 4700267117421785558, guid: 078d7dd960d3198498d484cb984b8a14, type: 3}
   - {fileID: 8745909140611569560, guid: 8945d644ee44d9d4a961558b7ef3ff41, type: 3}
+  - {fileID: 3912684850621543947, guid: 028ac130e356eb746a68a4135b58e04f, type: 3}
   button: {fileID: 4959329136966637816, guid: 63c695835dca7e44f96633156c5690d3, type: 3}
 --- !u!114 &951470153
 MonoBehaviour:
@@ -8477,6 +8478,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GizmoHandler
   mode: 0
+  enableSnapping: 1
+  positionSnap: 1
+  scaleSnap: 1
+  rotationSnapDegrees: 15
+  moveSensitivity: 1
+  scaleSensitivity: 1
+  rotateSensitivity: 180
 --- !u!4 &1955956617
 Transform:
   m_ObjectHideFlags: 0

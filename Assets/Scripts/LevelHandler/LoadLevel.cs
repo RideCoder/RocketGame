@@ -13,6 +13,7 @@ public class LoadLevel : MonoBehaviour
 
 
     Dictionary<string, GameObject> prefabMap;
+    public Vector3 spawnPosition;
 
     private void Awake()
     {
@@ -51,10 +52,14 @@ public class LoadLevel : MonoBehaviour
 
     void SpawnObjects(LevelData levelData)
     {
-        Debug.Log(levelData.objects.Length);
+        
         foreach (LevelObjectData obj in levelData.objects)
         {
-            Debug.Log("TEST");
+            if (obj.type == "Spawn")
+            {
+                spawnPosition = new Vector3(obj.x,obj.y, obj.z);
+            }
+            
             if (!prefabMap.TryGetValue(obj.type, out GameObject prefab))
             {
                 Debug.LogWarning("Unknown object type: " + obj.type);
@@ -75,6 +80,11 @@ public class LoadLevel : MonoBehaviour
                 lo.DeserializeExtraData(obj.jsonData);
             }
         }
+    }
+
+    public Vector3 GetSpawnPosition()
+    {
+        return spawnPosition;
     }
 
 

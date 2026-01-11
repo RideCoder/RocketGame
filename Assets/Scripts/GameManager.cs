@@ -15,9 +15,12 @@ public class GameManager : MonoBehaviour
     private bool timerRunning = true;
     public static bool playerDead = false;
     public AudioSource music;
+   
+    public LoadLevel level;
     void Start()
     {
-       
+        player.rocket.transform.position = level.GetSpawnPosition();
+      
         elapsedTime = 0f;
         attempts = 0;
     }
@@ -47,12 +50,13 @@ public class GameManager : MonoBehaviour
 
             if (Mouse.current.leftButton.wasPressedThisFrame && playerDead)
             {
-                Debug.Log("TEST");
+               
                 playerDead = false;
                 player.rocket.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
                 if (PracticeMode.practiceCheckpoints.Count <= 0)
                 {
-                    player.rocket.transform.position = new Vector3(0.5f, 4.35f, -6.5f);
+                 
+                    player.rocket.transform.position = level.GetSpawnPosition();
                 }
                 else
                 {
