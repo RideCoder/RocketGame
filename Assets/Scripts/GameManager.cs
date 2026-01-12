@@ -19,8 +19,9 @@ public class GameManager : MonoBehaviour
     public LoadLevel level;
     void Start()
     {
-        player.rocket.transform.position = level.GetSpawnPosition();
-      
+        //player.rocket.transform.position = level.GetSpawnPosition();
+        music.time = 60f;
+        music.Play();
         elapsedTime = 0f;
         attempts = 0;
     }
@@ -55,8 +56,15 @@ public class GameManager : MonoBehaviour
                 player.rocket.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
                 if (PracticeMode.practiceCheckpoints.Count <= 0)
                 {
-                 
-                    player.rocket.transform.position = level.GetSpawnPosition();
+                 if (level == null)
+                    {
+                        player.rocket.transform.position = new Vector3(2.4f, 4.18f, -6.77f);
+                    }
+                    else
+                    {
+                        player.rocket.transform.position = level.GetSpawnPosition();
+                    }
+                        
                 }
                 else
                 {
@@ -72,7 +80,7 @@ public class GameManager : MonoBehaviour
                 attempts += 1;
                 attemptsText.text = "Attempts: " + attempts.ToString();
                 timerRunning = true;
-                
+                music.time = 60f;
                 music.Play();
             }
         }

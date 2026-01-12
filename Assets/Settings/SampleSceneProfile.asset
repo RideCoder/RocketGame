@@ -18,19 +18,19 @@ MonoBehaviour:
     m_Value: 0
   threshold:
     m_OverrideState: 1
-    m_Value: 0.57
+    m_Value: 0.54
   intensity:
     m_OverrideState: 1
-    m_Value: 0.56
+    m_Value: 1.68
   scatter:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 0
   clamp:
     m_OverrideState: 0
     m_Value: 65472
   tint:
     m_OverrideState: 1
-    m_Value: {r: 0, g: 1, b: 0.90482306, a: 1}
+    m_Value: {r: 0.3996272, g: 0.3318405, b: 0.78867924, a: 1}
   highQualityFiltering:
     m_OverrideState: 1
     m_Value: 1
@@ -65,13 +65,13 @@ MonoBehaviour:
     m_Value: 1
   gaussianStart:
     m_OverrideState: 1
-    m_Value: 20.75
+    m_Value: 13.59
   gaussianEnd:
     m_OverrideState: 1
     m_Value: 32.38
   gaussianMaxRadius:
     m_OverrideState: 1
-    m_Value: 0.805
+    m_Value: 1.04
   highQualitySampling:
     m_OverrideState: 1
     m_Value: 0
@@ -110,6 +110,7 @@ MonoBehaviour:
   - {fileID: -7893295128165547882}
   - {fileID: 7391319092446245454}
   - {fileID: -5146375161350649823}
+  - {fileID: 8704266480721852015}
 --- !u!114 &849379129802519247
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -175,3 +176,31 @@ MonoBehaviour:
   clamp:
     m_OverrideState: 0
     m_Value: 0.05
+--- !u!114 &8704266480721852015
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 899c54efeace73346a0a16faa3afe726, type: 3}
+  m_Name: Vignette
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.Vignette
+  active: 0
+  color:
+    m_OverrideState: 1
+    m_Value: {r: 0, g: 0, b: 0, a: 1}
+  center:
+    m_OverrideState: 1
+    m_Value: {x: 0.5, y: 0.5}
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0.557
+  smoothness:
+    m_OverrideState: 1
+    m_Value: 1
+  rounded:
+    m_OverrideState: 0
+    m_Value: 0

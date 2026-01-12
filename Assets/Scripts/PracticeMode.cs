@@ -12,7 +12,7 @@ public class PracticeMode : MonoBehaviour
 
     void Start()
     {
-        
+        practiceCheckpoints.Clear();
     }
 
     // Update is called once per frame

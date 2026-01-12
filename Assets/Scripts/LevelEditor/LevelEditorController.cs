@@ -1,6 +1,9 @@
 using NUnit.Framework;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEditor.PlayerSettings;
@@ -58,7 +61,10 @@ public class LevelEditorController : MonoBehaviour
     
     void Update()
     {
-    
+        
+
+
+
         if (currentMode == Mode.Place)
         {
             UpdateGhost();
@@ -71,11 +77,25 @@ public class LevelEditorController : MonoBehaviour
 
            if (targetObjects.Count != 0 && Keyboard.current.leftCtrlKey.isPressed && Keyboard.current.dKey.wasPressedThisFrame)
             {
+                List<GameObject> gameObjects = new List<GameObject>();
                 foreach (GameObject targetObject in targetObjects)
                 {
+                   
                     GameObject duplicatedObj = Instantiate(targetObject, targetObject.transform.position, targetObject.transform.rotation, levelParent);
+                    gameObjects.Add(duplicatedObj);
+                   
+                }
+                UpdateSelectedOutline();
+                targetObjects.Clear();
+                
+                foreach (GameObject targetObject in gameObjects)
+                {
+                    targetObject.layer = 6;
+                    targetObjects.Add(targetObject);
                 }
                 
+                //targetObjects.Clear();
+                // UpdateSelectedOutline();
                 //Instantiate(targetObject);
             }
 
@@ -118,9 +138,10 @@ public class LevelEditorController : MonoBehaviour
                
                 if (!Keyboard.current.leftCtrlKey.isPressed)
                 {
+                    UpdateSelectedOutline();
                     targetObjects.Clear();
                 }
-                
+                levelObject.gameObject.layer = 6;
                 targetObjects.Add(levelObject.gameObject);
                 Vector3 avgPos = new Vector3(0, 0, 0);
                 foreach (GameObject obj in targetObjects)
@@ -136,13 +157,28 @@ public class LevelEditorController : MonoBehaviour
             {
                 GizmoHandler.GizmoUnselected();
                 positionGizmo.SetActive(false);
+                UpdateSelectedOutline();
                 targetObjects.Clear();
             }
 
         }
-       
+        else
+        {
+            GizmoHandler.GizmoUnselected();
+            positionGizmo.SetActive(false);
+            UpdateSelectedOutline();
+            targetObjects.Clear();
+        }
     }
 
+    public void UpdateSelectedOutline()
+    {
+        Debug.Log(targetObjects);
+        foreach (GameObject obj in targetObjects)
+        {
+            obj.gameObject.layer = 0;
+        }
+    }
     public void UpdateSelected(GameObject obj)
     {
        
@@ -210,5 +246,10 @@ public class LevelEditorController : MonoBehaviour
             Mathf.Round(pos.y / gridSize) * gridSize,
             Mathf.Round(pos.z / gridSize) * gridSize
         );
+    }
+
+    public void UpdateSelectionOutlines()
+    {
+
     }
 }
