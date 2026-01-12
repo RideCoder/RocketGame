@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         //player.rocket.transform.position = level.GetSpawnPosition();
+        playerDead = false;
         music.time = 60f;
         music.Play();
         elapsedTime = 0f;
@@ -51,7 +52,7 @@ public class GameManager : MonoBehaviour
 
             if (Mouse.current.leftButton.wasPressedThisFrame && playerDead)
             {
-               
+                Debug.Log(playerDead);
                 playerDead = false;
                 player.rocket.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
                 if (PracticeMode.practiceCheckpoints.Count <= 0)
@@ -78,10 +79,13 @@ public class GameManager : MonoBehaviour
                 deathText.enabled = false;
                 elapsedTime = 0f;     // Reset timer on death
                 attempts += 1;
+                Debug.Log("DIED");
+               
                 attemptsText.text = "Attempts: " + attempts.ToString();
                 timerRunning = true;
-                music.time = 60f;
+               
                 music.Play();
+                music.time = 60f;
             }
         }
     }
@@ -100,6 +104,7 @@ public class GameManager : MonoBehaviour
 
 
         // OPTIONAL behaviors (choose one)
+        Debug.Log("DIEDAGAIN");
         deathText.enabled = true;
         playerDead = true;
         timerRunning = false;

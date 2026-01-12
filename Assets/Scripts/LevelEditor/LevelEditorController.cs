@@ -68,6 +68,16 @@ public class LevelEditorController : MonoBehaviour
 
     public void SetPlaceMode()
     {
+        GizmoHandler.GizmoUnselected();
+        positionGizmo.SetActive(false);
+
+        foreach (GameObject obj in targetObjects)
+            if (obj != null)
+            {
+                obj.layer = 0;
+            }
+
+        targetObjects.Clear();
         currentMode = Mode.Place;
     }
 

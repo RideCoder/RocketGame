@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     {
        if (collision.gameObject.GetComponent<Goal>() == null)
         {
+            Debug.Log(collision.gameObject.name);
             OnPlayerDeath?.Invoke();
         }
         else
