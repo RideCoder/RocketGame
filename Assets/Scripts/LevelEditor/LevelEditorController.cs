@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using static UnityEditor.PlayerSettings;
 
@@ -45,6 +46,10 @@ public class LevelEditorController : MonoBehaviour
 
     public void SetPlaceMode()
     {
+        GizmoHandler.GizmoUnselected();
+        positionGizmo.SetActive(false);
+        UpdateSelectedOutline();
+        targetObjects.Clear();
         currentMode = Mode.Place;
     }
 
@@ -111,8 +116,21 @@ public class LevelEditorController : MonoBehaviour
                 targetObjects.Clear();
                 //Instantiate(targetObject);
             }
-            if (Mouse.current.leftButton.wasPressedThisFrame)
-                SelectBlock();
+            if (currentMode == Mode.Select)
+            {
+                if (Mouse.current.leftButton.wasPressedThisFrame)
+                {
+                    // If clicking UI, do nothing
+                    if (EventSystem.current != null &&
+                        EventSystem.current.IsPointerOverGameObject())
+                    {
+                        return;
+                    }
+
+                    SelectBlock();
+                }
+            }
+
         }
 
     }
