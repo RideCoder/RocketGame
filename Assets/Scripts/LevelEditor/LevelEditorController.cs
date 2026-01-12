@@ -1,34 +1,57 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using static UnityEditor.PlayerSettings;
 
 public class LevelEditorController : MonoBehaviour
 {
+    // --------------------------------------------------
+    // References
+    // --------------------------------------------------
     [Header("References")]
     public Camera editorCamera;
     public Transform levelParent;
     public static GameObject selectedObject;
     public GameObject startObject;
 
+    // --------------------------------------------------
+    // Placement
+    // --------------------------------------------------
     [Header("Placement Settings")]
     public float gridSize = 1f;
     public LayerMask placementMask;
 
+    // --------------------------------------------------
+    // Selection / Raycasting
+    // --------------------------------------------------
+    [Header("Raycast Masks")]
+    public LayerMask gizmoMask;
+    public LayerMask objectMask;
+
+    // --------------------------------------------------
+    // Ghost
+    // --------------------------------------------------
     [Header("Ghost Settings")]
     public Material ghostMaterial;
 
     GameObject ghost;
     MeshRenderer ghostRenderer;
-    public GameObject positionGizmo;
-    public static List<GameObject> targetObjects = new List<GameObject>(); 
-    
 
+    // --------------------------------------------------
+    // Gizmo
+    // --------------------------------------------------
+    public GameObject positionGizmo;
+    public static List<GameObject> targetObjects = new List<GameObject>();
+
+    // --------------------------------------------------
+    // Mode
+    // --------------------------------------------------
     public enum Mode
     {
         Select,
@@ -48,146 +71,163 @@ public class LevelEditorController : MonoBehaviour
         currentMode = Mode.Place;
     }
 
-
+    // --------------------------------------------------
+    // Unity Lifecycle
+    // --------------------------------------------------
     void Start()
     {
-
         LoadObjectList.OnObjectSelected += UpdateSelected;
         selectedObject = startObject;
-            CreateGhost();
-        
-       
+        CreateGhost();
     }
-    
+
     void Update()
     {
-        
-
-
-
         if (currentMode == Mode.Place)
         {
             UpdateGhost();
+
             if (Mouse.current.leftButton.wasPressedThisFrame)
                 PlaceBlock();
-        
         }
+
         if (currentMode == Mode.Select)
         {
+            HandleDuplication();
+            HandleDeletion();
 
-           if (targetObjects.Count != 0 && Keyboard.current.leftCtrlKey.isPressed && Keyboard.current.dKey.wasPressedThisFrame)
-            {
-                List<GameObject> gameObjects = new List<GameObject>();
-                foreach (GameObject targetObject in targetObjects)
-                {
-                   
-                    GameObject duplicatedObj = Instantiate(targetObject, targetObject.transform.position, targetObject.transform.rotation, levelParent);
-                    gameObjects.Add(duplicatedObj);
-                   
-                }
-                UpdateSelectedOutline();
-                targetObjects.Clear();
-                
-                foreach (GameObject targetObject in gameObjects)
-                {
-                    targetObject.layer = 6;
-                    targetObjects.Add(targetObject);
-                }
-                
-                //targetObjects.Clear();
-                // UpdateSelectedOutline();
-                //Instantiate(targetObject);
-            }
-
-            if (targetObjects.Count != 0 && Keyboard.current.deleteKey.wasPressedThisFrame)
-            {
-                foreach (GameObject targetObject in targetObjects)
-                {
-                    Destroy(targetObject);
-                    
-                    GizmoHandler.GizmoUnselected();
-                    positionGizmo.SetActive(false);
-                }
-                targetObjects.Clear();
-                //Instantiate(targetObject);
-            }
             if (Mouse.current.leftButton.wasPressedThisFrame)
-                SelectBlock();
-        }
+            {
+                if (EventSystem.current != null &&
+                    EventSystem.current.IsPointerOverGameObject())
+                    return;
 
+                SelectBlock();
+            }
+        }
     }
 
+    // --------------------------------------------------
+    // Selection Logic (GIZMO PRIORITY)
+    // --------------------------------------------------
     void SelectBlock()
     {
-       
-
-        
         Ray ray = editorCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
 
-        if (Physics.Raycast(ray, out RaycastHit hit, 100f, placementMask))
+        // 1️⃣ GIZMO RAYCAST (highest priority)
+        if (Physics.Raycast(ray, out RaycastHit gizmoHit, 1000f, gizmoMask))
         {
-            Debug.Log(hit);
-            if (hit.collider.gameObject.transform.parent.TryGetComponent(out Gizmo gizmo))
+            if (gizmoHit.collider.transform.parent.TryGetComponent(out Gizmo gizmo))
             {
-              
                 GizmoHandler.GizmoSelected(gizmo.gameObject);
                 return;
             }
-            if (hit.collider.gameObject.TryGetComponent(out LevelObject levelObject))
-            {
-               
-                if (!Keyboard.current.leftCtrlKey.isPressed)
-                {
-                    UpdateSelectedOutline();
-                    targetObjects.Clear();
-                }
-                levelObject.gameObject.layer = 6;
-                targetObjects.Add(levelObject.gameObject);
-                Vector3 avgPos = new Vector3(0, 0, 0);
-                foreach (GameObject obj in targetObjects)
-                {
-                    avgPos += obj.transform.position;
-                }
-                avgPos = avgPos / targetObjects.Count;
-                positionGizmo.transform.position = avgPos;
-                positionGizmo.SetActive(true);
-                Debug.Log(levelObject.transform.position);
-            }
-            else
-            {
-                GizmoHandler.GizmoUnselected();
-                positionGizmo.SetActive(false);
-                UpdateSelectedOutline();
-                targetObjects.Clear();
-            }
+        }
 
-        }
-        else
+        // 2️⃣ OBJECT RAYCAST
+        if (Physics.Raycast(ray, out RaycastHit objHit, 1000f, objectMask))
         {
-            GizmoHandler.GizmoUnselected();
-            positionGizmo.SetActive(false);
-            UpdateSelectedOutline();
-            targetObjects.Clear();
+            if (objHit.collider.TryGetComponent(out LevelObject levelObject))
+            {
+                if (!Keyboard.current.leftCtrlKey.isPressed)
+                    ClearSelection();
+
+                GameObject go = levelObject.gameObject;
+                go.layer = 6;
+                targetObjects.Add(go);
+
+                UpdateGizmoPosition();
+                positionGizmo.SetActive(true);
+                return;
+            }
         }
+
+        // 3️⃣ NOTHING HIT
+        ClearSelection();
     }
 
-    public void UpdateSelectedOutline()
+    // --------------------------------------------------
+    // Selection Helpers
+    // --------------------------------------------------
+    void ClearSelection()
     {
-        Debug.Log(targetObjects);
+        GizmoHandler.GizmoUnselected();
+        positionGizmo.SetActive(false);
+
+        foreach (GameObject obj in targetObjects)
+            if (obj != null)
+            {
+                obj.layer = 0;
+            }
+
+        targetObjects.Clear();
+    }
+
+    void UpdateGizmoPosition()
+    {
+        if (targetObjects.Count == 0) return;
+
+        Vector3 avg = Vector3.zero;
+        foreach (var obj in targetObjects)
+            avg += obj.transform.position;
+
+        positionGizmo.transform.position = avg / targetObjects.Count;
+    }
+
+    // --------------------------------------------------
+    // Duplication / Delete
+    // --------------------------------------------------
+    void HandleDuplication()
+    {
+        if (targetObjects.Count == 0) return;
+        if (!Keyboard.current.leftCtrlKey.isPressed ||
+            !Keyboard.current.dKey.wasPressedThisFrame) return;
+
+        List<GameObject> newObjects = new List<GameObject>();
+
         foreach (GameObject obj in targetObjects)
         {
-            obj.gameObject.layer = 0;
+            var dup = Instantiate(obj, obj.transform.position, obj.transform.rotation, levelParent);
+            newObjects.Add(dup);
         }
+
+        ClearSelection();
+
+        foreach (var obj in newObjects)
+        {
+            obj.layer = 6;
+            targetObjects.Add(obj);
+        }
+
+        UpdateGizmoPosition();
+        positionGizmo.SetActive(true);
     }
+
+    void HandleDeletion()
+    {
+        if (targetObjects.Count == 0) return;
+        if (!Keyboard.current.deleteKey.wasPressedThisFrame) return;
+
+        foreach (GameObject obj in targetObjects)
+            Destroy(obj);
+
+        ClearSelection();
+    }
+
+    // --------------------------------------------------
+    // Ghost / Placement
+    // --------------------------------------------------
     public void UpdateSelected(GameObject obj)
     {
-       
         selectedObject = obj;
         CreateGhost();
     }
 
     void CreateGhost()
     {
+        if (ghost != null)
+            Destroy(ghost);
+
         ghost = Instantiate(selectedObject);
         ghost.name = "GhostBlock";
 
@@ -196,13 +236,10 @@ public class LevelEditorController : MonoBehaviour
 
         foreach (var col in ghost.GetComponentsInChildren<Collider>())
             col.enabled = false;
-        
+
         ghost.layer = LayerMask.NameToLayer("Ignore Raycast");
     }
 
-    // -------------------------------
-    // Ghost Placement Logic
-    // -------------------------------
     void UpdateGhost()
     {
         Ray ray = editorCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
@@ -211,12 +248,8 @@ public class LevelEditorController : MonoBehaviour
         {
             ghost.SetActive(true);
 
-            // Offset by half a block along surface normal
             Vector3 offset = hit.normal * (gridSize * 0.5f);
-
-            // Apply grid snapping AFTER offset
-            Vector3 snappedPosition = SnapToGrid(hit.point + offset);
-            ghost.transform.position = snappedPosition;
+            ghost.transform.position = SnapToGrid(hit.point + offset);
         }
         else
         {
@@ -224,21 +257,16 @@ public class LevelEditorController : MonoBehaviour
         }
     }
 
-    // -------------------------------
-    // Block Placement
-    // -------------------------------
     void PlaceBlock()
     {
         if (!ghost.activeSelf) return;
 
-        Vector3 pos = ghost.transform.position;
-
-        Instantiate(selectedObject, pos, Quaternion.identity, levelParent);
+        Instantiate(selectedObject, ghost.transform.position, Quaternion.identity, levelParent);
     }
 
-    // -------------------------------
-    // Grid Snapping
-    // -------------------------------
+    // --------------------------------------------------
+    // Grid
+    // --------------------------------------------------
     Vector3 SnapToGrid(Vector3 pos)
     {
         return new Vector3(
@@ -246,10 +274,5 @@ public class LevelEditorController : MonoBehaviour
             Mathf.Round(pos.y / gridSize) * gridSize,
             Mathf.Round(pos.z / gridSize) * gridSize
         );
-    }
-
-    public void UpdateSelectionOutlines()
-    {
-
     }
 }

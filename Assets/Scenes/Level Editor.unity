@@ -3508,6 +3508,12 @@ MonoBehaviour:
   placementMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  gizmoMask:
+    serializedVersion: 2
+    m_Bits: 8
+  objectMask:
+    serializedVersion: 2
+    m_Bits: 1
   ghostMaterial: {fileID: 2100000, guid: f6c222b20d68e894a95ef1fa4ec53c86, type: 2}
   positionGizmo: {fileID: 1613511977}
   currentMode: 1
@@ -6019,11 +6025,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2933741070751193990, guid: 58576d2d4a56ea24684b1d6025fa739b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 2933741070751193990, guid: 58576d2d4a56ea24684b1d6025fa739b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2933741070751193990, guid: 58576d2d4a56ea24684b1d6025fa739b, type: 3}
       propertyPath: m_LocalPosition.z
