@@ -80,15 +80,15 @@ public class GizmoHandler : MonoBehaviour
                 {
                     if (gizmoSelected.name == "GizmoX")
                         obj.transform.Rotate(
-                            new Vector3(Mouse.current.delta.ReadValue().x * Time.deltaTime * 360, 0, 0));
+                            new Vector3(Mouse.current.delta.ReadValue().x * Time.deltaTime * 90, 0, 0));
 
                     if (gizmoSelected.name == "GizmoZ")
                         obj.transform.Rotate(
-                            new Vector3(0, 0, Mouse.current.delta.ReadValue().x * Time.deltaTime * 360));
+                            new Vector3(0, 0, Mouse.current.delta.ReadValue().x * Time.deltaTime * 90));
 
                     if (gizmoSelected.name == "GizmoY")
                         obj.transform.Rotate(
-                            new Vector3(0, Mouse.current.delta.ReadValue().y * Time.deltaTime * 360, 0));
+                            new Vector3(0, Mouse.current.delta.ReadValue().y * Time.deltaTime * 90, 0));
                 }
             }
         }
