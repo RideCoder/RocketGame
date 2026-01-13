@@ -287,14 +287,14 @@ public class LevelEditorController : MonoBehaviour
                 newObjects.Add(dup);
             }
 
-            // ClearSelection();
-            foreach (GameObject obj in targetObjects)
-                if (obj != null)
-                {
-                    obj.layer = 0;
-                }
+           // ClearSelection();
+           foreach (GameObject obj in targetObjects)
+            if (obj != null)
+            {
+                obj.layer = 0;
+            }
 
-            targetObjects.Clear();
+        targetObjects.Clear();
             foreach (var obj in newObjects)
             {
                 obj.layer = 6;

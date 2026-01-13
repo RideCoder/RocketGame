@@ -17,6 +17,9 @@ public class GameManager : MonoBehaviour
     public AudioSource music;
    
     public LoadLevel level;
+    private SpawnPointObject spawnPoint;
+    public GameObject levelParent;
+    
     void Start()
     {
         //player.rocket.transform.position = level.GetSpawnPosition();
@@ -25,6 +28,16 @@ public class GameManager : MonoBehaviour
         music.Play();
         elapsedTime = 0f;
         attempts = 0;
+        if (levelParent != null)
+        {
+            foreach (Transform t in levelParent.transform)
+            {
+                if (t.gameObject.TryGetComponent<SpawnPointObject>(out SpawnPointObject spawn))
+                {
+                    spawnPoint = spawn;
+                }
+            }
+        }
     }
     void OnEnable()
     {
@@ -59,7 +72,15 @@ public class GameManager : MonoBehaviour
                 {
                  if (level == null)
                     {
-                        player.rocket.transform.position = new Vector3(2.4f, 4.18f, -6.77f);
+                        if (levelParent != null)
+                        {
+                            player.rocket.transform.position = spawnPoint.transform.position;
+                        }
+                        else
+                        {
+                            player.rocket.transform.position = new Vector3(2.4f, 4.18f, -6.77f);
+                        }
+                            
                     }
                     else
                     {
