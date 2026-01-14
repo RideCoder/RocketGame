@@ -4,6 +4,8 @@ using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
+
+    public static GameManager Instance;
     public Player player;
     public TMP_Text timeText;
     public TMP_Text attemptsText;
@@ -11,15 +13,32 @@ public class GameManager : MonoBehaviour
     public TMP_Text winText;
     public int attempts;
 
-    private float elapsedTime;
+    public float elapsedTime;
     private bool timerRunning = true;
     public static bool playerDead = false;
     public AudioSource music;
    
     public LoadLevel level;
-    private SpawnPointObject spawnPoint;
+    public SpawnPointObject spawnPoint;
     public GameObject levelParent;
-    
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+            Instance = null;
+    }
+
+
     void Start()
     {
         //player.rocket.transform.position = level.GetSpawnPosition();
@@ -28,6 +47,20 @@ public class GameManager : MonoBehaviour
         music.Play();
         elapsedTime = 0f;
         attempts = 0;
+        if (levelParent != null)
+        {
+            foreach (Transform t in levelParent.transform)
+            {
+                if (t.gameObject.TryGetComponent<SpawnPointObject>(out SpawnPointObject spawn))
+                {
+                    spawnPoint = spawn;
+                }
+            }
+        }
+    }
+
+    public void SetSpawnPoint()
+    {
         if (levelParent != null)
         {
             foreach (Transform t in levelParent.transform)
@@ -50,6 +83,37 @@ public class GameManager : MonoBehaviour
         Player.OnPlayerDeath -= PlayerDeath;
         Player.OnPlayerTouchGoal -= PlayerWin;
     }
+
+    public void SpawnPlayer()
+    {
+        if (PracticeMode.practiceCheckpoints.Count <= 0)
+        {
+            if (level == null)
+            {
+                if (levelParent != null && spawnPoint != null)
+                {
+                    player.rocket.transform.position = spawnPoint.transform.position;
+                }
+                else
+                {
+                    player.rocket.transform.position = new Vector3(2.4f, 4.18f, -6.77f);
+                }
+
+            }
+            else
+            {
+                player.rocket.transform.position = level.GetSpawnPosition();
+            }
+
+        }
+        else
+        {
+            PracticeMode.practiceCheckpoints.TryGetValue(PracticeMode.practiceCheckpoints.Count, out GameObject practiceCheckpoint);
+            player.rocket.transform.position = practiceCheckpoint.transform.position;
+
+            player.rocket.GetComponent<Rigidbody>().linearVelocity = practiceCheckpoint.GetComponent<Checkpoint>().velocity;
+        }
+    }
     void Update()
     {
         if (!UIManager.IsPaused)
@@ -68,33 +132,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log(playerDead);
                 playerDead = false;
                 player.rocket.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
-                if (PracticeMode.practiceCheckpoints.Count <= 0)
-                {
-                 if (level == null)
-                    {
-                        if (levelParent != null)
-                        {
-                            player.rocket.transform.position = spawnPoint.transform.position;
-                        }
-                        else
-                        {
-                            player.rocket.transform.position = new Vector3(2.4f, 4.18f, -6.77f);
-                        }
-                            
-                    }
-                    else
-                    {
-                        player.rocket.transform.position = level.GetSpawnPosition();
-                    }
-                        
-                }
-                else
-                {
-                    PracticeMode.practiceCheckpoints.TryGetValue(PracticeMode.practiceCheckpoints.Count, out GameObject practiceCheckpoint);
-                    player.rocket.transform.position = practiceCheckpoint.transform.position;
-                   
-                    player.rocket.GetComponent<Rigidbody>().linearVelocity = practiceCheckpoint.GetComponent<Checkpoint>().velocity;
-                }
+                SpawnPlayer();
 
                 
                 deathText.enabled = false;

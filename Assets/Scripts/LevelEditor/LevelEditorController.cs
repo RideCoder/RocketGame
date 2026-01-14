@@ -66,6 +66,24 @@ public class LevelEditorController : MonoBehaviour
     }
 
     public Mode currentMode;
+    public static LevelEditorController Instance;
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+            Instance = null;
+    }
+
+
 
     public void SetSelectMode()
     {
@@ -244,7 +262,7 @@ public class LevelEditorController : MonoBehaviour
     // --------------------------------------------------
     // Selection Helpers
     // --------------------------------------------------
-    void ClearSelection()
+    public void ClearSelection()
     {
         GizmoHandler.GizmoUnselected();
         positionGizmo.SetActive(false);
