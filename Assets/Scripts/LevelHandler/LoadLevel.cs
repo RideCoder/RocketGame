@@ -8,7 +8,7 @@ public class LoadLevel : MonoBehaviour
 
     public GameObject levelParent;
     [Header("Prefabs")]
-    public GameObject[] levelObjects;
+    public List<GameObject> levelObjects = new List<GameObject>();
 
 
 
@@ -18,7 +18,7 @@ public class LoadLevel : MonoBehaviour
     private void Awake()
     {
 
-
+        levelObjects.AddRange(Resources.LoadAll<GameObject>("LevelObjects"));
         prefabMap = new Dictionary<string, GameObject>();
 
         foreach (var obj in levelObjects)

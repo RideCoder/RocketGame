@@ -1,4 +1,6 @@
+using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,12 +9,14 @@ public class LoadObjectList : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
-    public GameObject[] objects;
+    private List<GameObject> levelObjects = new List<GameObject>();
     public GameObject button;
     public static event Action<GameObject> OnObjectSelected;
     void Start()
     {
-        foreach (GameObject obj in objects)
+
+        levelObjects.AddRange(Resources.LoadAll<GameObject>("LevelObjects"));
+        foreach (GameObject obj in levelObjects)
         {
             GameObject buttonClone = Instantiate(button);
             buttonClone.transform.parent = transform;

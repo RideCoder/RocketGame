@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
     {
         //player.rocket.transform.position = level.GetSpawnPosition();
         playerDead = false;
-        music.time = 60f;
+        music.time = 0f;
         music.Play();
         elapsedTime = 0f;
         attempts = 0;
@@ -144,7 +144,7 @@ public class GameManager : MonoBehaviour
                 timerRunning = true;
                
                 music.Play();
-                music.time = 60f;
+                music.time = 0f;
             }
         }
     }

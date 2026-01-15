@@ -115,6 +115,7 @@ public class LevelEditorController : MonoBehaviour
         selectedObject = startObject;
         CreateGhost();
         dragging = false;
+        targetObjects.Clear();
     }
     void OnGUI()
     {
@@ -193,7 +194,11 @@ public class LevelEditorController : MonoBehaviour
                           
                             GameObject go = transformObj.gameObject;
                             go.layer = 6;
-                            targetObjects.Add(go);
+                            if (!targetObjects.Contains(go))
+                            {
+                                targetObjects.Add(go);
+                            }
+                            
 
                             UpdateGizmoPosition();
                             positionGizmo.SetActive(true);
@@ -282,7 +287,11 @@ public class LevelEditorController : MonoBehaviour
 
         Vector3 avg = Vector3.zero;
         foreach (var obj in targetObjects)
-            avg += obj.transform.position;
+            if (obj != null)
+            {
+                avg += obj.transform.position;
+            }
+            
 
         positionGizmo.transform.position = avg / targetObjects.Count;
     }

@@ -2420,12 +2420,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LoadLevel
   levelParent: {fileID: 634769940}
-  levelObjects:
-  - {fileID: 4700267117421785558, guid: 58576d2d4a56ea24684b1d6025fa739b, type: 3}
-  - {fileID: 4700267117421785558, guid: db74d57d0536e5447b8bff1145fd4f74, type: 3}
-  - {fileID: 4700267117421785558, guid: 078d7dd960d3198498d484cb984b8a14, type: 3}
-  - {fileID: 8745909140611569560, guid: 8945d644ee44d9d4a961558b7ef3ff41, type: 3}
-  - {fileID: 3912684850621543947, guid: 028ac130e356eb746a68a4135b58e04f, type: 3}
+  levelObjects: []
   spawnPosition: {x: 0, y: 0, z: 0}
 --- !u!4 &498625557
 Transform:
@@ -9738,9 +9733,9 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 7418e67273b26e54088d651dbbd84762, type: 3}
+  m_Resource: {fileID: 8300000, guid: ac8c4c4023bc8d849a0c0d65a125cdfe, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.032
+  m_Volume: 0.287
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -10557,8 +10552,11 @@ MonoBehaviour:
   deathText: {fileID: 590447084}
   winText: {fileID: 18392108}
   attempts: 0
+  elapsedTime: 0
   music: {fileID: 1164723910}
   level: {fileID: 498625556}
+  spawnPoint: {fileID: 0}
+  levelParent: {fileID: 0}
 --- !u!4 &1362231728
 Transform:
   m_ObjectHideFlags: 0
@@ -10640,8 +10638,8 @@ MonoBehaviour:
   rocket: {fileID: 1366602035}
   particleSystem: {fileID: 521779487}
   audio: {fileID: 412148353}
-  forwardSpeed: 3
-  thrustForce: 60
+  forwardSpeed: 15
+  thrustForce: 30
 --- !u!75 &1366602039
 ConstantForce:
   m_ObjectHideFlags: 0

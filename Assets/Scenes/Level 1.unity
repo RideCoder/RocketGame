@@ -5380,8 +5380,11 @@ MonoBehaviour:
   deathText: {fileID: 146682005}
   winText: {fileID: 1566576841}
   attempts: 0
+  elapsedTime: 0
   music: {fileID: 490164704}
   level: {fileID: 0}
+  spawnPoint: {fileID: 0}
+  levelParent: {fileID: 0}
 --- !u!4 &266904377
 Transform:
   m_ObjectHideFlags: 0
@@ -7593,7 +7596,7 @@ AudioSource:
   m_PlayOnAwake: 0
   m_Volume: 0.086
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
