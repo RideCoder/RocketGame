@@ -1065,15 +1065,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4122122624416296122, guid: 3a74725b1f8343b48893ecedb23355d5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.1292
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4122122624416296122, guid: 3a74725b1f8343b48893ecedb23355d5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4122122624416296122, guid: 3a74725b1f8343b48893ecedb23355d5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.26584
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4122122624416296122, guid: 3a74725b1f8343b48893ecedb23355d5, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4544,7 +4544,7 @@ MonoBehaviour:
     m_Bits: 8
   objectMask:
     serializedVersion: 2
-    m_Bits: 384
+    m_Bits: 385
   dragging: 0
   dragStart: {x: 0, y: 0}
   dragEnd: {x: 0, y: 0}
