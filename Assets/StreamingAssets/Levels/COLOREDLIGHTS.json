@@ -1,0 +1,58 @@
+{
+    "levelName": "COLOREDLIGHTS",
+    "gravity": -9.8100004196167,
+    "objects": [
+        {
+            "type": "Spawn",
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "xScale": 1.0,
+            "yScale": 1.0,
+            "zScale": 1.0,
+            "xRotation": 0.0,
+            "yRotation": 0.0,
+            "zRotation": 0.0,
+            "jsonData": ""
+        },
+        {
+            "type": "Block",
+            "x": 0.0,
+            "y": 0.0,
+            "z": 5.0,
+            "xScale": 1.0,
+            "yScale": 1.0,
+            "zScale": 1.0,
+            "xRotation": 0.0,
+            "yRotation": 0.0,
+            "zRotation": 0.0,
+            "jsonData": ""
+        },
+        {
+            "type": "Light",
+            "x": -0.06319066137075424,
+            "y": 0.0,
+            "z": 3.8869450092315676,
+            "xScale": 1.0,
+            "yScale": 1.0,
+            "zScale": 1.0,
+            "xRotation": 0.0,
+            "yRotation": 0.0,
+            "zRotation": 0.0,
+            "jsonData": "{\"color\":{\"r\":0.5272226333618164,\"g\":0.535994291305542,\"b\":0.7468512654304504,\"a\":1.0},\"range\":10.0,\"intensity\":1.0}"
+        },
+        {
+            "type": "Light",
+            "x": -1.0,
+            "y": 0.0,
+            "z": 5.0,
+            "xScale": 1.0,
+            "yScale": 1.0,
+            "zScale": 1.0,
+            "xRotation": 0.0,
+            "yRotation": 0.0,
+            "zRotation": 0.0,
+            "jsonData": "{\"color\":{\"r\":0.13806875050067902,\"g\":0.7468512654304504,\"b\":0.18935488164424897,\"a\":1.0},\"range\":10.0,\"intensity\":1.0}"
+        }
+    ]
+}

@@ -10,12 +10,12 @@ public class Player : MonoBehaviour
     public static event Action OnPlayerTouchGoal;
     private void OnCollisionEnter(UnityEngine.Collision collision)
     {
-       if (collision.gameObject.GetComponent<Goal>() == null)
+       if (collision.gameObject.GetComponent<LevelObject>() != null)
         {
             Debug.Log(collision.gameObject.name);
             OnPlayerDeath?.Invoke();
         }
-        else
+        else if (collision.gameObject.GetComponent<Goal>() != null)
         {
             OnPlayerTouchGoal?.Invoke();
         }
