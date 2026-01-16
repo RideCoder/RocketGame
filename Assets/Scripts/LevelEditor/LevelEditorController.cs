@@ -289,17 +289,16 @@ public class LevelEditorController : MonoBehaviour
 
         foreach (GameObject obj in targetObjects)
         {
-            obj.layer = obj.GetComponent<LevelObject>().mask;
+     
             newObjects.Add(Instantiate(obj, obj.transform.position, obj.transform.rotation, levelParent));
 
         }
-        
-        ClearSelection();
+  
 
         foreach (var obj in newObjects)
         {
-            obj.layer = 6; 
-            targetObjects.Add(obj);
+            obj.layer = obj.GetComponent<LevelObject>().mask; 
+     
         }
 
         UpdateGizmoPosition();
