@@ -4,6 +4,7 @@ public class LevelObject : MonoBehaviour
 {
     public string type; // "Block"
     public LayerMask mask;
+    public bool SurfaceNormalRotation;
     public void Start()
     {
         mask = gameObject.layer;

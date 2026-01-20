@@ -1,0 +1,84 @@
+{
+    "levelName": "fweafewa",
+    "gravity": -9.8100004196167,
+    "objects": [
+        {
+            "type": "Spawn",
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "xScale": 1.0,
+            "yScale": 1.0,
+            "zScale": 1.0,
+            "xRotation": 0.0,
+            "yRotation": 0.0,
+            "zRotation": 0.0,
+            "jsonData": ""
+        },
+        {
+            "type": "Block",
+            "x": 0.0,
+            "y": 0.0,
+            "z": 5.0,
+            "xScale": 1.0,
+            "yScale": 1.0,
+            "zScale": 1.0,
+            "xRotation": 0.0,
+            "yRotation": 0.0,
+            "zRotation": 0.0,
+            "jsonData": ""
+        },
+        {
+            "type": "Spike",
+            "x": -1.0,
+            "y": 0.0,
+            "z": 5.0,
+            "xScale": 1.0,
+            "yScale": 1.0,
+            "zScale": 1.0,
+            "xRotation": 0.0,
+            "yRotation": 0.0,
+            "zRotation": 90.0,
+            "jsonData": ""
+        },
+        {
+            "type": "Spike",
+            "x": 0.0,
+            "y": 0.0,
+            "z": 2.108501434326172,
+            "xScale": 1.1132245063781739,
+            "yScale": 4.256382465362549,
+            "zScale": 1.0384150743484498,
+            "xRotation": 16.21889877319336,
+            "yRotation": 90.0,
+            "zRotation": 270.0,
+            "jsonData": ""
+        },
+        {
+            "type": "Spike",
+            "x": 0.0,
+            "y": 1.0,
+            "z": 5.0,
+            "xScale": 1.0,
+            "yScale": 1.0,
+            "zScale": 1.0,
+            "xRotation": 0.0,
+            "yRotation": 0.0,
+            "zRotation": 0.0,
+            "jsonData": ""
+        },
+        {
+            "type": "DirtBlock",
+            "x": 1.0,
+            "y": -0.40595829486846926,
+            "z": 5.0,
+            "xScale": 0.8989412188529968,
+            "yScale": 1.4797557592391968,
+            "zScale": 1.0,
+            "xRotation": 0.0,
+            "yRotation": 0.0,
+            "zRotation": 136.3372344970703,
+            "jsonData": ""
+        }
+    ]
+}

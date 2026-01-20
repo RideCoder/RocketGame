@@ -356,7 +356,10 @@ public class LevelEditorController : MonoBehaviour
             ghost.transform.position = SnapToGrid(hit.point + offset);
 
             // Align spike's Y+ axis with the surface normal
-            ghost.transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
+            if (selectedObject.GetComponent<LevelObject>().SurfaceNormalRotation)
+            {
+                ghost.transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
+            }
         }
         else
         {
@@ -367,7 +370,15 @@ public class LevelEditorController : MonoBehaviour
     void PlaceBlock()
     {
         if (!ghost.activeSelf) return;
-        Instantiate(selectedObject, ghost.transform.position, ghost.transform.rotation, levelParent);
+        if (selectedObject.GetComponent<LevelObject>().SurfaceNormalRotation)
+        {
+            Instantiate(selectedObject, ghost.transform.position, ghost.transform.rotation, levelParent);
+        }
+        else
+        {
+            Instantiate(selectedObject, ghost.transform.position, Quaternion.identity, levelParent);
+        }
+        
     }
 
     // --------------------------------------------------
