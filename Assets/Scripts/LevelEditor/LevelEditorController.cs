@@ -351,8 +351,12 @@ public class LevelEditorController : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, 100f, placementMask))
         {
             ghost.SetActive(true);
+
             Vector3 offset = hit.normal * (gridSize * 0.5f);
             ghost.transform.position = SnapToGrid(hit.point + offset);
+
+            // Align spike's Y+ axis with the surface normal
+            ghost.transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
         }
         else
         {
@@ -363,7 +367,7 @@ public class LevelEditorController : MonoBehaviour
     void PlaceBlock()
     {
         if (!ghost.activeSelf) return;
-        Instantiate(selectedObject, ghost.transform.position, Quaternion.identity, levelParent);
+        Instantiate(selectedObject, ghost.transform.position, ghost.transform.rotation, levelParent);
     }
 
     // --------------------------------------------------
