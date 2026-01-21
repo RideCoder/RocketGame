@@ -21,12 +21,11 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Outlines
-  m_Shader: {fileID: -6465566751694194690, guid: e172af4ef3bde3942a35aebb61762a5d, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: b9eb5b2adcebb37449bb0892aab56351, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
-  m_InvalidKeywords:
-  - _OVERLAY
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -241,7 +240,7 @@ Material:
     - _StepOffset: 0.088
     - _Strength: 0
     - _Surface: 0
-    - _Thickness: 2
+    - _Thickness: 1
     - _Thickness_Depth: 2
     - _Thickness_Normal: 0.5
     - _Thicnkess: 0.03
