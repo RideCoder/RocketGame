@@ -1994,9 +1994,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94e18fbe7797969438484fb83829ee6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OptionsMenu
-  resolutionDropdown: {fileID: 1301364758}
   soundSlider: {fileID: 75594037}
   musicSlider: {fileID: 1848891777}
+  cameraShake: 1
+  cameraShakeText: {fileID: 0}
+  boostText: {fileID: 0}
+  options: []
+  resolutionText: {fileID: 0}
+  vSyncText: {fileID: 0}
+  fpsList: 
+  fpsText: {fileID: 0}
+  postProcessingText: {fileID: 0}
 --- !u!114 &326950579
 MonoBehaviour:
   m_ObjectHideFlags: 0

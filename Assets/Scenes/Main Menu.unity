@@ -3883,7 +3883,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 28, y: 510.1352}
+  m_AnchoredPosition: {x: 0, y: 525.32367}
   m_SizeDelta: {x: 1797.25, y: 363.7501}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2140529730
@@ -3906,7 +3906,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Rocket X Fail
+  m_text: 'Rocket X Rocket
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 10bebfec8dadf5e4da7f7290d99e0d56, type: 2}
   m_sharedMaterial: {fileID: -3867057271112889751, guid: 10bebfec8dadf5e4da7f7290d99e0d56, type: 2}
@@ -3933,10 +3935,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 253.75
-  m_fontSizeBase: 128
+  m_fontSize: 200
+  m_fontSizeBase: 200
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 700
   m_fontStyle: 1

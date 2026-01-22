@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // Thrust (hold to go up)
-        if (Mouse.current.leftButton.isPressed || Keyboard.current.upArrowKey.isPressed)
+        if (OptionsMenu.buttons[OptionsMenu.boostInputIndex].isPressed)
         {
             propulsion.relativeForce = new Vector3(0f, thrustForce, 0f);
             particleSystem.enableEmission = true;
