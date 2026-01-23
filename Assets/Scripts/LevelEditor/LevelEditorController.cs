@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.UIElements;
@@ -22,6 +23,9 @@ public class LevelEditorController : MonoBehaviour
     public Transform levelParent;
     public static GameObject selectedObject;
     public GameObject startObject;
+
+    public TMP_Text selectText;
+    public TMP_Text placeText;
 
     // --------------------------------------------------
     // Placement
@@ -100,6 +104,8 @@ public class LevelEditorController : MonoBehaviour
     {
         ghost.SetActive(false);
         currentMode = Mode.Select;
+        selectText.color = new UnityEngine.Color(60f / 255f, 93f / 255f, 255, 255);
+        placeText.color = UnityEngine.Color.white;
     }
 
     public void SetPlaceMode()
@@ -115,6 +121,9 @@ public class LevelEditorController : MonoBehaviour
         NotifyTargetObjectsUpdated();
 
         currentMode = Mode.Place;
+
+        selectText.color = UnityEngine.Color.white;
+        placeText.color = new UnityEngine.Color(60f / 255f, 93f / 255f, 255, 255);
     }
 
     // --------------------------------------------------
@@ -128,6 +137,18 @@ public class LevelEditorController : MonoBehaviour
         dragging = false;
         targetObjects.Clear();
         NotifyTargetObjectsUpdated();
+
+
+        if (currentMode == Mode.Select)
+        {
+            selectText.color = new UnityEngine.Color(60f / 255f, 93f / 255f, 255, 255);
+
+
+        }
+        else if (currentMode == Mode.Place)
+        {
+            placeText.color = new UnityEngine.Color(60f / 255f, 93f / 255f, 255, 255);
+        }
     }
 
     void OnGUI()
