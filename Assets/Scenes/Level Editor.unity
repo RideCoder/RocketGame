@@ -1588,7 +1588,7 @@ AudioSource:
   m_GameObject: {fileID: 258851724}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -8614051392795026803, guid: c71cf8bd7129b474eb0f4a976441a7c8, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 9644bbfd015ff9d498672002008f957a, type: 3}
   m_PlayOnAwake: 1
@@ -1994,17 +1994,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94e18fbe7797969438484fb83829ee6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OptionsMenu
+  audioMixer: {fileID: 0}
   soundSlider: {fileID: 75594037}
   musicSlider: {fileID: 1848891777}
-  cameraShake: 1
-  cameraShakeText: {fileID: 0}
+  masterSlider: {fileID: 0}
   boostText: {fileID: 0}
   options: []
   resolutionText: {fileID: 0}
-  vSyncText: {fileID: 0}
   fpsList: 
   fpsText: {fileID: 0}
-  postProcessingText: {fileID: 0}
 --- !u!114 &326950579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27302,7 +27300,7 @@ AudioSource:
   m_GameObject: {fileID: 2083304252}
   m_Enabled: 0
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 2449930107189597302, guid: c71cf8bd7129b474eb0f4a976441a7c8, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 7418e67273b26e54088d651dbbd84762, type: 3}
   m_PlayOnAwake: 0
