@@ -240,7 +240,7 @@ Material:
     - _StepOffset: 0.088
     - _Strength: 0
     - _Surface: 0
-    - _Thickness: 1
+    - _Thickness: 2
     - _Thickness_Depth: 2
     - _Thickness_Normal: 0.5
     - _Thicnkess: 0.03
