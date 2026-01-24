@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 4978517508487292798}
   - component: {fileID: 7833718740123932363}
   - component: {fileID: 826922951006018892}
-  - component: {fileID: 3883406137085431756}
   - component: {fileID: -3006346566050636443}
+  - component: {fileID: 1936013275763568281}
   m_Layer: 7
   m_Name: Dirt Block
   m_TagString: Untagged
@@ -113,19 +113,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3883406137085431756
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4700267117421785558}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2300677841470aa44a89f7c580d85e8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LevelObject
-  type: DirtBlock
 --- !u!114 &-3006346566050636443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -139,3 +126,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: OutlineFx::OutlineFx.OutlineFx
   _color: {r: 1, g: 1, b: 1, a: 1}
+--- !u!114 &1936013275763568281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4700267117421785558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4953f85ed1b5b6b4b85d5650f6ea28ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SolidObject
+  type: DirtBlock
+  mask:
+    serializedVersion: 2
+    m_Bits: 0
+  SurfaceNormalRotation: 0
+  meshRenderer: {fileID: 7833718740123932363}

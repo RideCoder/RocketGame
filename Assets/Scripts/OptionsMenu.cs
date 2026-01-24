@@ -62,6 +62,8 @@ public class OptionsMenu : MonoBehaviour
             Keyboard.current.spaceKey
         };
 
+        
+
         UpdateBoostText();
 
         // ---------- RESOLUTION INIT ----------

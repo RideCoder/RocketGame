@@ -201,25 +201,31 @@ public class LevelEditorController : MonoBehaviour
         {
             dragging = false;
             dragEnd = Mouse.current.position.ReadValue();
-
-            foreach (Transform t in levelParent)
+            if (dragStart != dragEnd)
             {
-                Vector2 screenPos = editorCamera.WorldToScreenPoint(t.position);
-
-                if (screenPos.x > Mathf.Min(dragStart.x, dragEnd.x) &&
-                    screenPos.x < Mathf.Max(dragStart.x, dragEnd.x) &&
-                    screenPos.y > Mathf.Min(dragStart.y, dragEnd.y) &&
-                    screenPos.y < Mathf.Max(dragStart.y, dragEnd.y))
+                foreach (Transform t in levelParent)
                 {
-                    if (!targetObjects.Contains(t.gameObject))
+                    Vector2 screenPos = editorCamera.WorldToScreenPoint(t.position);
+
+                    if (screenPos.x > Mathf.Min(dragStart.x, dragEnd.x) &&
+                        screenPos.x < Mathf.Max(dragStart.x, dragEnd.x) &&
+                        screenPos.y > Mathf.Min(dragStart.y, dragEnd.y) &&
+                        screenPos.y < Mathf.Max(dragStart.y, dragEnd.y))
                     {
-                        t.gameObject.layer = 6;
-                        targetObjects.Add(t.gameObject);
+                        if (!targetObjects.Contains(t.gameObject))
+                        {
+                            t.gameObject.layer = 6;
+                            targetObjects.Add(t.gameObject);
+                        }
                     }
                 }
             }
+            else
+            {
+                SelectBlock();
+            }
 
-            UpdateGizmoPosition();
+                UpdateGizmoPosition();
             positionGizmo.SetActive(targetObjects.Count > 0);
             NotifyTargetObjectsUpdated();
         }
@@ -255,7 +261,12 @@ public class LevelEditorController : MonoBehaviour
         {
             if (hit.collider.TryGetComponent(out LevelObject levelObject))
             {
-                ClearSelection();
+                if (!Keyboard.current.leftCtrlKey.isPressed)
+                {
+
+                    ClearSelection();
+                }
+               
 
                 GameObject go = levelObject.gameObject;
                 go.layer = 6;
@@ -267,8 +278,12 @@ public class LevelEditorController : MonoBehaviour
                 return;
             }
         }
-
-        ClearSelection();
+        if (!Keyboard.current.leftCtrlKey.isPressed)
+        {
+           
+            ClearSelection();
+        }
+        
     }
 
     // --------------------------------------------------
