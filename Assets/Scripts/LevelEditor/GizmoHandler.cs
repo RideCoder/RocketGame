@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class GizmoHandler : MonoBehaviour
@@ -6,12 +7,26 @@ public class GizmoHandler : MonoBehaviour
     public static GameObject gizmoSelected;
 
     public int mode = 0;
-
+    public TMP_Text[] editorButtons;
     public void ChangeMode(int m)
     {
         mode = m;
-    }
+        foreach (TMP_Text text in editorButtons)
+        {
+            text.color = Color.white;
+        }
 
+        editorButtons[m].color = new UnityEngine.Color(60f / 255f, 93f / 255f, 255, 255);
+    }
+    public void Start()
+    {
+        foreach (TMP_Text text in editorButtons)
+        {
+            text.color = Color.white;
+        }
+
+        editorButtons[mode].color = new UnityEngine.Color(60f / 255f, 93f / 255f, 255, 255);
+    }
     public static void GizmoSelected(GameObject gizmo)
     {
         Debug.Log("Gizmo Selected");

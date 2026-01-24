@@ -81,6 +81,8 @@ public class LevelEditorController : MonoBehaviour
 
     public static LevelEditorController Instance;
 
+
+
     private void Awake()
     {
         if (Instance != null && Instance != this)

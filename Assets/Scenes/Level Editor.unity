@@ -4552,6 +4552,8 @@ MonoBehaviour:
   editorCamera: {fileID: 608512081}
   levelParent: {fileID: 2042242748}
   startObject: {fileID: 4700267117421785558, guid: 58576d2d4a56ea24684b1d6025fa739b, type: 3}
+  selectText: {fileID: 1775538402}
+  placeText: {fileID: 424203740}
   gridSize: 1
   placementMask:
     serializedVersion: 2
