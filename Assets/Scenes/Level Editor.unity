@@ -1281,12 +1281,12 @@ MonoBehaviour:
   attemptsText: {fileID: 316952004}
   deathText: {fileID: 1235186796}
   winText: {fileID: 815795885}
-  attempts: 0
-  elapsedTime: 0
   music: {fileID: 2083304253}
   level: {fileID: 0}
   spawnPoint: {fileID: 0}
   levelParent: {fileID: 2042242747}
+  attempts: 0
+  elapsedTime: 0
 --- !u!4 &418941400
 Transform:
   m_ObjectHideFlags: 0
@@ -1661,7 +1661,6 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 936715040}
   - {fileID: 883633771}
   - {fileID: 697587963}
   - {fileID: 1554273562}
@@ -1679,6 +1678,7 @@ RectTransform:
   - {fileID: 1590498205}
   - {fileID: 521224433}
   - {fileID: 1253824130}
+  - {fileID: 936715040}
   - {fileID: 134016641}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3274,11 +3274,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2933741070751193990, guid: 58576d2d4a56ea24684b1d6025fa739b, type: 3}
       propertyPath: m_LocalScale.x
-      value: 9
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2933741070751193990, guid: 58576d2d4a56ea24684b1d6025fa739b, type: 3}
       propertyPath: m_LocalScale.y
-      value: 18
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2933741070751193990, guid: 58576d2d4a56ea24684b1d6025fa739b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3286,11 +3286,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2933741070751193990, guid: 58576d2d4a56ea24684b1d6025fa739b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -3
       objectReference: {fileID: 0}
     - target: {fileID: 2933741070751193990, guid: 58576d2d4a56ea24684b1d6025fa739b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5
+      value: 10.5
       objectReference: {fileID: 0}
     - target: {fileID: 2933741070751193990, guid: 58576d2d4a56ea24684b1d6025fa739b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -23812,7 +23812,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f670c8737b33e5468794fbfb8f78749, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GizmoHandler
-  mode: 0
+  editorCamera: {fileID: 608512081}
   editorButtons:
   - {fileID: 476466996}
   - {fileID: 531758003}

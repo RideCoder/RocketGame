@@ -81,6 +81,7 @@ public class GameManager : MonoBehaviour
 
         if (winText != null)
             winText.enabled = false;
+        SpawnPlayer();
     }
 
     private void Update()
@@ -115,7 +116,7 @@ public class GameManager : MonoBehaviour
 
         // Fully reset physics state
         rb.isKinematic = true;
-        rb.velocity = Vector3.zero;
+        rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
 
         SpawnPlayer();
@@ -170,7 +171,7 @@ public class GameManager : MonoBehaviour
             );
 
             spawnPos = practiceCheckpoint.transform.position;
-            rb.velocity = practiceCheckpoint.GetComponent<Checkpoint>().velocity;
+            rb.linearVelocity = practiceCheckpoint.GetComponent<Checkpoint>().velocity;
         }
 
         player.rocket.transform.position = spawnPos;
@@ -222,7 +223,7 @@ public class GameManager : MonoBehaviour
         }
 
         Rigidbody rb = player.rocket.GetComponent<Rigidbody>();
-        rb.velocity = Vector3.zero;
+        rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
         rb.isKinematic = true;
     }

@@ -36,7 +36,7 @@ public class UIManager : MonoBehaviour
         {
             if (Keyboard.current.escapeKey.wasPressedThisFrame && !escMenu.activeSelf)
             {
-                if (!GameManager.playerDead)
+                ;// if (!GameManager.playerDead)
                 {
                     Time.timeScale = 0;
                     escMenu.SetActive(true);
