@@ -86,34 +86,46 @@ public class GameManager : MonoBehaviour
 
     public void SpawnPlayer()
     {
+        Rigidbody rb = player.rocket.GetComponent<Rigidbody>();
+
+        // Temporarily disable physics
+        rb.isKinematic = true;
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+
+        Vector3 spawnPos;
+
         if (PracticeMode.practiceCheckpoints.Count <= 0)
         {
             if (level == null)
             {
                 if (levelParent != null && spawnPoint != null)
-                {
-                    player.rocket.transform.position = spawnPoint.transform.position;
-                }
+                    spawnPos = spawnPoint.transform.position;
                 else
-                {
-                    player.rocket.transform.position = new Vector3(2.4f, 4.18f, -6.77f);
-                }
-
+                    spawnPos = new Vector3(2.4f, 4.18f, -6.77f);
             }
             else
             {
-                player.rocket.transform.position = level.GetSpawnPosition();
+                spawnPos = level.GetSpawnPosition();
             }
-
         }
         else
         {
-            PracticeMode.practiceCheckpoints.TryGetValue(PracticeMode.practiceCheckpoints.Count, out GameObject practiceCheckpoint);
-            player.rocket.transform.position = practiceCheckpoint.transform.position;
+            PracticeMode.practiceCheckpoints.TryGetValue(
+                PracticeMode.practiceCheckpoints.Count,
+                out GameObject practiceCheckpoint
+            );
 
-            player.rocket.GetComponent<Rigidbody>().linearVelocity = practiceCheckpoint.GetComponent<Checkpoint>().velocity;
+            spawnPos = practiceCheckpoint.transform.position;
+            rb.velocity = practiceCheckpoint.GetComponent<Checkpoint>().velocity;
         }
+
+        player.rocket.transform.position = spawnPos;
+
+        // Re-enable physics on next physics step
+        rb.isKinematic = false;
     }
+
     void Update()
     {
         if (!UIManager.IsPaused)
