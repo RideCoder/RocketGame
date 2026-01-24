@@ -19,12 +19,16 @@ public class LoadObjectList : MonoBehaviour
         foreach (GameObject obj in levelObjects)
         {
             GameObject buttonClone = Instantiate(button);
-            buttonClone.transform.parent = transform;
+            buttonClone.transform.SetParent(transform, false); // critical
+
+            RectTransform rt = buttonClone.GetComponent<RectTransform>();
+            rt.localScale = Vector3.one;
+
             buttonClone.transform.GetChild(0).GetComponent<TMP_Text>().text = obj.name;
+
             buttonClone.GetComponent<Button>().onClick.AddListener(() =>
             {
-                OnObjectSelected.Invoke(obj);
-               
+                OnObjectSelected?.Invoke(obj);
             });
         }
     }

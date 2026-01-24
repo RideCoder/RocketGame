@@ -5,9 +5,11 @@ using UnityEngine;
 public class PropertiesHandler : MonoBehaviour
 {
     public GameObject propertiesButton;
+   
 
     public List<LevelObject> selectedObjects = new List<LevelObject>();
     public GameObject lightProperties;
+    public GameObject solidObjectProperties;
 
     public void OpenProperties()
     {
@@ -52,6 +54,10 @@ public class PropertiesHandler : MonoBehaviour
         if (type == typeof(LightObject))
         {
             lightProperties.SetActive(true);
+        }
+        if (type == typeof(SolidObject))
+        {
+            solidObjectProperties.SetActive(true);
         }
         Debug.Log($"Opening properties for type: {type.Name}");
 

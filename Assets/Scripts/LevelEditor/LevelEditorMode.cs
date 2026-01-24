@@ -12,6 +12,8 @@ public class LevelEditorMode : MonoBehaviour
     public Camera cam;
     public Vector3 editorPosition;
     public Quaternion editorRotation;
+
+    
     private enum Mode
     {
         Play,
