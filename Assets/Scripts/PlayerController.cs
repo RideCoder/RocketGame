@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // Thrust (hold to go up)
+        Debug.Log(OptionsMenu.buttons);
         if (OptionsMenu.buttons[OptionsMenu.boostInputIndex].isPressed)
         {
             propulsion.relativeForce = new Vector3(0f, thrustForce, 0f);
