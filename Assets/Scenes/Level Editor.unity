@@ -3273,6 +3273,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 2042242748}
     m_Modifications:
     - target: {fileID: 2933741070751193990, guid: 58576d2d4a56ea24684b1d6025fa739b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2933741070751193990, guid: 58576d2d4a56ea24684b1d6025fa739b, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 2933741070751193990, guid: 58576d2d4a56ea24684b1d6025fa739b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -16843,6 +16851,14 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5203589532593200692, guid: 028ac130e356eb746a68a4135b58e04f, type: 3}
+      propertyPath: m_ExcludeLayers.m_Bits
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5203589532593200692, guid: 028ac130e356eb746a68a4135b58e04f, type: 3}
+      propertyPath: m_IncludeLayers.m_Bits
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7334808580121807757, guid: 028ac130e356eb746a68a4135b58e04f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -23115,7 +23131,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1810640409}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1844095503
 GameObject:
   m_ObjectHideFlags: 0

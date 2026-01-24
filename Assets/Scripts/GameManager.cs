@@ -4,23 +4,28 @@ using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
-
     public static GameManager Instance;
+
+    [Header("References")]
     public Player player;
     public TMP_Text timeText;
     public TMP_Text attemptsText;
     public TMP_Text deathText;
     public TMP_Text winText;
-    public int attempts;
-
-    public float elapsedTime;
-    private bool timerRunning = true;
-    public static bool playerDead = false;
     public AudioSource music;
-   
+
     public LoadLevel level;
     public SpawnPointObject spawnPoint;
     public GameObject levelParent;
+
+    [Header("State")]
+    public int attempts;
+    public float elapsedTime;
+
+    private bool timerRunning = true;
+    private bool pendingRespawn = false;
+
+    public static bool playerDead = false;
 
     private void Awake()
     {
@@ -29,6 +34,7 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
         Instance = this;
     }
 
@@ -38,60 +44,107 @@ public class GameManager : MonoBehaviour
             Instance = null;
     }
 
-
-    void Start()
-    {
-        //player.rocket.transform.position = level.GetSpawnPosition();
-        playerDead = false;
-        music.time = 0f;
-        music.Play();
-        elapsedTime = 0f;
-        attempts = 0;
-        if (levelParent != null)
-        {
-            foreach (Transform t in levelParent.transform)
-            {
-                if (t.gameObject.TryGetComponent<SpawnPointObject>(out SpawnPointObject spawn))
-                {
-                    spawnPoint = spawn;
-                }
-            }
-        }
-    }
-
-    public void SetSpawnPoint()
-    {
-        if (levelParent != null)
-        {
-            foreach (Transform t in levelParent.transform)
-            {
-                if (t.gameObject.TryGetComponent<SpawnPointObject>(out SpawnPointObject spawn))
-                {
-                    spawnPoint = spawn;
-                }
-            }
-        }
-    }
-    void OnEnable()
+    private void OnEnable()
     {
         Player.OnPlayerDeath += PlayerDeath;
         Player.OnPlayerTouchGoal += PlayerWin;
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         Player.OnPlayerDeath -= PlayerDeath;
         Player.OnPlayerTouchGoal -= PlayerWin;
     }
 
-    public void SpawnPlayer()
+    private void Start()
     {
+        playerDead = false;
+        timerRunning = true;
+        pendingRespawn = false;
+
+        elapsedTime = 0f;
+        attempts = 0;
+
+        if (music != null)
+        {
+            music.time = 0f;
+            music.Play();
+        }
+
+        ResolveSpawnPoint();
+
+        if (attemptsText != null)
+            attemptsText.text = "Attempts: 0";
+
+        if (deathText != null)
+            deathText.enabled = false;
+
+        if (winText != null)
+            winText.enabled = false;
+    }
+
+    private void Update()
+    {
+        if (UIManager.IsPaused)
+            return;
+
+        if (timerRunning)
+        {
+            elapsedTime += Time.deltaTime;
+            if (timeText != null)
+                timeText.text = FormatTime(elapsedTime);
+        }
+
+        if (Mouse.current.leftButton.wasPressedThisFrame && playerDead)
+        {
+            pendingRespawn = true;
+        }
+
+        if (pendingRespawn)
+        {
+            pendingRespawn = false;
+            Respawn();
+        }
+    }
+
+    private void Respawn()
+    {
+        playerDead = false;
+
         Rigidbody rb = player.rocket.GetComponent<Rigidbody>();
 
-        // Temporarily disable physics
+        // Fully reset physics state
         rb.isKinematic = true;
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
+
+        SpawnPlayer();
+
+        Physics.SyncTransforms();
+
+        rb.isKinematic = false;
+
+        if (deathText != null)
+            deathText.enabled = false;
+
+        elapsedTime = 0f;
+        attempts += 1;
+
+        if (attemptsText != null)
+            attemptsText.text = "Attempts: " + attempts;
+
+        timerRunning = true;
+
+        if (music != null)
+        {
+            music.time = 0f;
+            music.Play();
+        }
+    }
+
+    public void SpawnPlayer()
+    {
+        Rigidbody rb = player.rocket.GetComponent<Rigidbody>();
 
         Vector3 spawnPos;
 
@@ -121,44 +174,57 @@ public class GameManager : MonoBehaviour
         }
 
         player.rocket.transform.position = spawnPos;
-
-        // Re-enable physics on next physics step
-        rb.isKinematic = false;
     }
 
-    void Update()
+    public void SetSpawnPoint()
     {
-        if (!UIManager.IsPaused)
+        ResolveSpawnPoint();
+    }
+
+    private void ResolveSpawnPoint()
+    {
+        if (levelParent == null)
+            return;
+
+        foreach (Transform t in levelParent.transform)
         {
-            if (timerRunning)
+            if (t.gameObject.TryGetComponent<SpawnPointObject>(out SpawnPointObject spawn))
             {
-                elapsedTime += Time.deltaTime;
-                timeText.text = FormatTime(elapsedTime);
-            }
-
-
-
-
-            if (Mouse.current.leftButton.wasPressedThisFrame && playerDead)
-            {
-                Debug.Log(playerDead);
-                playerDead = false;
-                player.rocket.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
-                SpawnPlayer();
-
-                
-                deathText.enabled = false;
-                elapsedTime = 0f;     // Reset timer on death
-                attempts += 1;
-                Debug.Log("DIED");
-               
-                attemptsText.text = "Attempts: " + attempts.ToString();
-                timerRunning = true;
-               
-                music.Play();
-                music.time = 0f;
+                spawnPoint = spawn;
+                break;
             }
         }
+    }
+
+    public void PlayerDeath()
+    {
+        if (playerDead)
+            return;
+
+        playerDead = true;
+        timerRunning = false;
+
+        if (deathText != null)
+            deathText.enabled = true;
+
+        if (music != null)
+            music.Stop();
+    }
+
+    public void PlayerWin()
+    {
+        timerRunning = false;
+
+        if (winText != null)
+        {
+            winText.enabled = true;
+            winText.text = "<Time: " + FormatTime(elapsedTime) + ">";
+        }
+
+        Rigidbody rb = player.rocket.GetComponent<Rigidbody>();
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        rb.isKinematic = true;
     }
 
     private string FormatTime(float time)
@@ -168,27 +234,5 @@ public class GameManager : MonoBehaviour
         int hundredths = Mathf.FloorToInt((time * 100f) % 100f);
 
         return $"{minutes:00}:{seconds:00}.{hundredths:00}";
-    }
-
-    public void PlayerDeath()
-    {
-
-
-        // OPTIONAL behaviors (choose one)
-        Debug.Log("DIEDAGAIN");
-        deathText.enabled = true;
-        playerDead = true;
-        timerRunning = false;
-        music.Stop();
-        // timerRunning = false; // Stop timer on death
-    }
-
-    public void PlayerWin()
-    {
-        timerRunning = false;
-        winText.enabled = true;
-        player.rocket.GetComponent<Rigidbody>().isKinematic = true;
-
-        winText.text = "<Time: "+ FormatTime(elapsedTime)+">";
     }
 }
