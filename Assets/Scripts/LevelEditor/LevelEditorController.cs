@@ -154,6 +154,8 @@ public class LevelEditorController : MonoBehaviour
         targetObjects.Clear();
         NotifyTargetObjectsUpdated();
 
+        GizmoHandler.OnModeSwitch +=  UpdateGizmoPosition;
+
 
         if (currentMode == Mode.Select)
         {
@@ -179,17 +181,35 @@ public class LevelEditorController : MonoBehaviour
         float height = Mathf.Abs(dragStart.y - currentMouse.y);
 
         Rect rect = new Rect(xMin, yMin, width, height);
-        DrawRectBorder(rect, 2, UnityEngine.Color.cyan);
+        DrawRectBorder(rect, 2f, UnityEngine.Color.cyan);
     }
+
+    static Texture2D _whiteTex;
 
     void DrawRectBorder(Rect rect, float thickness, UnityEngine.Color color)
     {
-     
-        selection.anchoredPosition = rect.position;
-        selection.sizeDelta = rect.size;
+        if (_whiteTex == null)
+        {
+            _whiteTex = new Texture2D(1, 1);
+            _whiteTex.SetPixel(0, 0, UnityEngine.Color.white);
+            _whiteTex.Apply();
+        }
 
-      
+        UnityEngine.Color oldColor = GUI.color;
+        GUI.color = color;
+
+        // Top
+        GUI.DrawTexture(new Rect(rect.xMin, rect.yMin, rect.width, thickness), _whiteTex);
+        // Bottom
+        GUI.DrawTexture(new Rect(rect.xMin, rect.yMax - thickness, rect.width, thickness), _whiteTex);
+        // Left
+        GUI.DrawTexture(new Rect(rect.xMin, rect.yMin, thickness, rect.height), _whiteTex);
+        // Right
+        GUI.DrawTexture(new Rect(rect.xMax - thickness, rect.yMin, thickness, rect.height), _whiteTex);
+
+        GUI.color = oldColor;
     }
+
 
 
     void Update()
@@ -318,7 +338,7 @@ public class LevelEditorController : MonoBehaviour
         NotifyTargetObjectsUpdated();
     }
 
-    void UpdateGizmoPosition()
+    void UpdateGizmoPosition(int mode = 0)
     {
         if (targetObjects.Count == 0) return;
 
@@ -327,6 +347,11 @@ public class LevelEditorController : MonoBehaviour
             avg += obj.transform.position;
 
         positionGizmo.transform.position = avg / targetObjects.Count;
+        if (mode == 1)
+        {
+            positionGizmo.transform.rotation = targetObjects[0].transform.rotation;
+        }
+        
     }
 
     // --------------------------------------------------
