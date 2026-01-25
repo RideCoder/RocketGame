@@ -283,7 +283,7 @@ public class LevelEditorController : MonoBehaviour
            
             ClearSelection();
         }
-        
+        GizmoHandler.GizmoUnselected();
     }
 
     // --------------------------------------------------
