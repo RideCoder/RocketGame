@@ -1006,6 +1006,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LoadLevel
   levelParent: {fileID: 634769940}
+  missingObject: {fileID: 1257125778885948968, guid: bba23d951958706428e0d5749ff98f34, type: 3}
   levelObjects: []
   spawnPosition: {x: 0, y: 0, z: 0}
 --- !u!4 &498625557
@@ -6879,12 +6880,12 @@ MonoBehaviour:
   attemptsText: {fileID: 1288219605}
   deathText: {fileID: 590447084}
   winText: {fileID: 18392108}
-  attempts: 0
-  elapsedTime: 0
   music: {fileID: 1164723910}
   level: {fileID: 498625556}
   spawnPoint: {fileID: 0}
   levelParent: {fileID: 0}
+  attempts: 0
+  elapsedTime: 0
 --- !u!4 &1362231728
 Transform:
   m_ObjectHideFlags: 0

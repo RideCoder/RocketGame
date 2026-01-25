@@ -7,6 +7,7 @@ public class LoadLevel : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     public GameObject levelParent;
+    public GameObject missingObject;
     [Header("Prefabs")]
     public List<GameObject> levelObjects = new List<GameObject>();
 
@@ -62,6 +63,11 @@ public class LoadLevel : MonoBehaviour
             
             if (!prefabMap.TryGetValue(obj.type, out GameObject prefab))
             {
+                
+                GameObject missing = Instantiate(missingObject, new Vector3(obj.x, obj.y, obj.z), Quaternion.identity, levelParent.transform);
+                missing.transform.localScale = new Vector3(obj.xScale, obj.yScale, obj.zScale);
+                missing.transform.eulerAngles = new Vector3(obj.xRotation, obj.yRotation, obj.zRotation);
+              
                 Debug.LogWarning("Unknown object type: " + obj.type);
                 continue;
             }
