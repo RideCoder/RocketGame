@@ -391,7 +391,15 @@ public class LevelEditorController : MonoBehaviour
             ghost.SetActive(true);
 
             Vector3 offset = hit.normal * (gridSize * 0.5f);
-            ghost.transform.position = SnapToGrid(hit.point + offset);
+            if (GizmoHandler.snapEnabled)
+            {
+                ghost.transform.position = SnapToGrid(hit.point + offset);
+            }
+            else
+            {
+                ghost.transform.position = hit.point + offset;
+            }
+
 
             // Align spike's Y+ axis with the surface normal
             if (selectedObject.GetComponent<LevelObject>().SurfaceNormalRotation)

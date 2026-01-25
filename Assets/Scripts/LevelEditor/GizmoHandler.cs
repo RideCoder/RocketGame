@@ -4,19 +4,22 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.ProBuilder.Shapes;
+using UnityEngine.UI;
+using static UnityEngine.UI.Image;
 
 public class GizmoHandler : MonoBehaviour
 {
     public static GameObject gizmoSelected;
     public static GameObject plane1;
     public static GameObject plane2;
+    public TMP_Text snapText;
     public Material material;
     public static int mode = 0;
     public Camera editorCamera;
     public TMP_Text[] editorButtons;
 
     // Snapping settings
-    public bool snapEnabled = true;
+    public static bool snapEnabled = true;
     public float positionSnapSize = 1f;
     public float rotationSnapSize = 15f;
     public float scaleSnapSize = 1f;
@@ -39,24 +42,36 @@ public class GizmoHandler : MonoBehaviour
         editorButtons[m].color = new UnityEngine.Color(60f / 255f, 93f / 255f, 255, 255);
     }
 
-    public void Start()
+    public void ToggleSnap()
     {
-        plane1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        plane1.layer = LayerMask.NameToLayer("Plane");
-        MakeTransparent(plane1);
-        plane1.SetActive(false);
-
-        plane2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        plane2.layer = LayerMask.NameToLayer("Plane");
-        MakeTransparent(plane2);
-        plane2.SetActive(false);
-
-        foreach (TMP_Text text in editorButtons)
+        snapEnabled = !snapEnabled;
+        if (snapEnabled)
         {
-            text.color = Color.white;
+            snapText.color = Color.green;
         }
-        editorButtons[mode].color = new UnityEngine.Color(60f / 255f, 93f / 255f, 255, 255);
+        else
+        {
+            snapText.color = Color.red;
+        }
     }
+            public void Start()
+            {
+                plane1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                plane1.layer = LayerMask.NameToLayer("Plane");
+                MakeTransparent(plane1);
+                plane1.SetActive(false);
+
+                plane2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                plane2.layer = LayerMask.NameToLayer("Plane");
+                MakeTransparent(plane2);
+                plane2.SetActive(false);
+
+                foreach (TMP_Text text in editorButtons)
+                {
+                    text.color = Color.white;
+                }
+                editorButtons[mode].color = new UnityEngine.Color(60f / 255f, 93f / 255f, 255, 255);
+            }
 
     private void MakeTransparent(GameObject obj)
     {
@@ -173,13 +188,16 @@ public class GizmoHandler : MonoBehaviour
         return Mathf.Round(value / snapSize) * snapSize;
     }
 
-    private Vector3 SnapVector3(Vector3 value, float snapSize)
+    private Vector3 SnapVector3(Vector3 value, float snapSize, Vector3 origin)
     {
-        if (!snapEnabled) return value;
+        float Snap(float v, float o)
+        {
+            return Mathf.Round((v - o) / snapSize) * snapSize + o;
+        }
         return new Vector3(
-            SnapValue(value.x, snapSize),
-            SnapValue(value.y, snapSize),
-            SnapValue(value.z, snapSize)
+        Snap(value.x, origin.x),
+        Snap(value.y, origin.y),
+            Snap(value.z, origin.z)
         );
     }
 
@@ -274,15 +292,20 @@ public class GizmoHandler : MonoBehaviour
                     else if (gizmoSelected.name == "GizmoY")
                         newGizmoPos = new Vector3(avgPos.x, planeHit.point.y, avgPos.z);
                     // Apply snapping to the new position
-                    newGizmoPos = SnapVector3(newGizmoPos, positionSnapSize);
-                    // Move all objects maintaining their relative positions
-                    foreach (GameObject obj in LevelEditorController.targetObjects)
+                    if (snapEnabled)
                     {
-                        if (objectOffsets.ContainsKey(obj))
-                        {
-                            obj.transform.position = newGizmoPos + objectOffsets[obj];
-                        }
+                        newGizmoPos = SnapVector3(newGizmoPos, positionSnapSize, avgPos);
                     }
+                   
+
+                        // Move all objects maintaining their relative positions
+                        foreach (GameObject obj in LevelEditorController.targetObjects)
+                        {
+                            if (objectOffsets.ContainsKey(obj))
+                            {
+                                obj.transform.position = newGizmoPos + objectOffsets[obj];
+                            }
+                        }
                 }
                 // SCALE
                 else if (mode == 1)
@@ -314,8 +337,15 @@ public class GizmoHandler : MonoBehaviour
                             newScale.x = Mathf.Max(0.01f, newScale.x);
                             newScale.y = Mathf.Max(0.01f, newScale.y);
                             newScale.z = Mathf.Max(0.01f, newScale.z);
-
-                            obj.transform.localScale = SnapVector3(newScale, scaleSnapSize);
+                            if (snapEnabled)
+                            {
+                                obj.transform.localScale = SnapVector3(newScale, scaleSnapSize, avgPos);
+                            }
+                            else
+                            {
+                                obj.transform.localScale = newScale;
+                            }
+                            
                         }
                     }
                 }
