@@ -1037,7 +1037,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4953f85ed1b5b6b4b85d5650f6ea28ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SolidObject
-  type: Objects
+  type: Cabinet
   mask:
     serializedVersion: 2
     m_Bits: 0
