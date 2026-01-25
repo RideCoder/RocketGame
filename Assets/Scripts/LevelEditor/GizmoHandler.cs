@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.ProBuilder.Shapes;
 using UnityEngine.UI;
@@ -31,7 +32,30 @@ public class GizmoHandler : MonoBehaviour
     private bool isDragging = false;
     private Vector3 lastAvgPos;
     private Vector3 dragStartPoint;
+    private bool IsPointerOverUI()
+    {
+        if (EventSystem.current == null)
+            return false;
 
+        // For mouse
+        if (EventSystem.current.IsPointerOverGameObject())
+            return true;
+
+        // For Input System touch / pointer IDs
+        if (Touchscreen.current != null)
+        {
+            foreach (var touch in Touchscreen.current.touches)
+            {
+                if (touch.press.isPressed &&
+                    EventSystem.current.IsPointerOverGameObject(touch.touchId.ReadValue()))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
     public void ChangeMode(int m)
     {
         mode = m;
@@ -56,6 +80,7 @@ public class GizmoHandler : MonoBehaviour
     }
             public void Start()
             {
+        snapEnabled = true;
                 plane1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 plane1.layer = LayerMask.NameToLayer("Plane");
                 MakeTransparent(plane1);
@@ -235,6 +260,16 @@ public class GizmoHandler : MonoBehaviour
 
     private void Update()
     {
+        // Ignore all gizmo interactions while pointer is over UI
+        if (IsPointerOverUI())
+        {
+            ClearHover();
+
+            if (Mouse.current.leftButton.wasReleasedThisFrame)
+                isDragging = false;
+
+            return;
+        }
         if (!isDragging)
         {
             Ray gizmoRay = editorCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
