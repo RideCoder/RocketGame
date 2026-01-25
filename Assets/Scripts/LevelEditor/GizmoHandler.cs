@@ -10,9 +10,24 @@ public class GizmoHandler : MonoBehaviour
     public static GameObject gizmoSelected;
     public static GameObject plane1;
     public static GameObject plane2;
+    public Material material;
     public static int mode = 0;
     public Camera editorCamera;
     public TMP_Text[] editorButtons;
+
+    // Snapping settings
+    public bool snapEnabled = true;
+    public float positionSnapSize = 1f;
+    public float rotationSnapSize = 15f;
+    public float scaleSnapSize = 1f;
+    static float rotationAmount = 0f;
+
+    // Add these as class fields
+    private Dictionary<GameObject, Vector3> objectOffsets = new Dictionary<GameObject, Vector3>();
+    private Dictionary<GameObject, Vector3> initialScales = new Dictionary<GameObject, Vector3>();
+    private bool isDragging = false;
+    private Vector3 lastAvgPos;
+    private Vector3 dragStartPoint;
 
     public void ChangeMode(int m)
     {
@@ -28,11 +43,12 @@ public class GizmoHandler : MonoBehaviour
     {
         plane1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
         plane1.layer = LayerMask.NameToLayer("Plane");
-     
+        MakeTransparent(plane1);
         plane1.SetActive(false);
 
         plane2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
         plane2.layer = LayerMask.NameToLayer("Plane");
+        MakeTransparent(plane2);
         plane2.SetActive(false);
 
         foreach (TMP_Text text in editorButtons)
@@ -40,6 +56,15 @@ public class GizmoHandler : MonoBehaviour
             text.color = Color.white;
         }
         editorButtons[mode].color = new UnityEngine.Color(60f / 255f, 93f / 255f, 255, 255);
+    }
+
+    private void MakeTransparent(GameObject obj)
+    {
+        Renderer renderer = obj.GetComponent<Renderer>();
+        if (renderer != null)
+        {
+            renderer.material = material;
+        }
     }
 
     public static void GizmoSelected(GameObject gizmo)
@@ -89,6 +114,48 @@ public class GizmoHandler : MonoBehaviour
                 plane2.transform.rotation = Quaternion.identity;
             }
         }
+        // SCALE
+        else if (mode == 1)
+        {
+            Vector3 targetPos = LevelEditorController.targetObjects[0].transform.position;
+
+            plane1.SetActive(true);
+            plane2.SetActive(true);
+
+            if (gizmoSelected.name == "GizmoX")
+            {
+                // XY plane and XZ plane for X-axis scaling
+                plane1.transform.localScale = new Vector3(100000f, .1f, 100000f);
+                plane1.transform.position = targetPos;
+                plane1.transform.rotation = Quaternion.identity;
+
+                plane2.transform.localScale = new Vector3(100000f, 100000f, .1f);
+                plane2.transform.position = targetPos;
+                plane2.transform.rotation = Quaternion.identity;
+            }
+            else if (gizmoSelected.name == "GizmoZ")
+            {
+                // XZ plane and YZ plane for Z-axis scaling
+                plane1.transform.localScale = new Vector3(100000f, .1f, 100000f);
+                plane1.transform.position = targetPos;
+                plane1.transform.rotation = Quaternion.identity;
+
+                plane2.transform.localScale = new Vector3(.1f, 100000f, 100000f);
+                plane2.transform.position = targetPos;
+                plane2.transform.rotation = Quaternion.identity;
+            }
+            else if (gizmoSelected.name == "GizmoY")
+            {
+                // XY plane and YZ plane for Y-axis scaling
+                plane1.transform.localScale = new Vector3(.1f, 100000f, 100000f);
+                plane1.transform.position = targetPos;
+                plane1.transform.rotation = Quaternion.identity;
+
+                plane2.transform.localScale = new Vector3(100000f, 100000f, .1f);
+                plane2.transform.position = targetPos;
+                plane2.transform.rotation = Quaternion.identity;
+            }
+        }
     }
 
     public static void GizmoUnselected()
@@ -96,13 +163,25 @@ public class GizmoHandler : MonoBehaviour
         plane1.SetActive(false);
         plane2.SetActive(false);
         Debug.Log("Gizmo Unselected");
+        rotationAmount = 0;
         gizmoSelected = null;
     }
 
-    // Add these as class fields
-    private Dictionary<GameObject, Vector3> objectOffsets = new Dictionary<GameObject, Vector3>();
-    private bool isDragging = false;
-    private Vector3 lastAvgPos;
+    private float SnapValue(float value, float snapSize)
+    {
+        if (!snapEnabled) return value;
+        return Mathf.Round(value / snapSize) * snapSize;
+    }
+
+    private Vector3 SnapVector3(Vector3 value, float snapSize)
+    {
+        if (!snapEnabled) return value;
+        return new Vector3(
+            SnapValue(value.x, snapSize),
+            SnapValue(value.y, snapSize),
+            SnapValue(value.z, snapSize)
+        );
+    }
 
     public void Update()
     {
@@ -114,8 +193,11 @@ public class GizmoHandler : MonoBehaviour
         {
             avgPos += obj.transform.position;
         }
-        avgPos /= LevelEditorController.targetObjects.Count;
-        gizmoSelected.transform.parent.position = avgPos;
+        if (LevelEditorController.targetObjects.Count != 0)
+        {
+            avgPos /= LevelEditorController.targetObjects.Count;
+            gizmoSelected.transform.parent.position = avgPos;
+        }
 
         Ray ray = editorCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
 
@@ -131,27 +213,59 @@ public class GizmoHandler : MonoBehaviour
         if (hitPlane)
         {
             // On first frame of mouse press, store offsets
-            if (Mouse.current.leftButton.wasPressedThisFrame)
+            if (Mouse.current.leftButton.wasPressedThisFrame ||
+                (Mouse.current.leftButton.isPressed && !isDragging))
             {
-                Debug.Log("TEST");
                 isDragging = true;
                 objectOffsets.Clear();
+                initialScales.Clear();
                 lastAvgPos = avgPos;
+                dragStartPoint = planeHit.point;
 
-                // Store offset for each object from the gizmo center
-                foreach (GameObject obj in LevelEditorController.targetObjects)
+                // MOVE mode - Store position offset for each object from the gizmo center
+                if (mode == 0)
                 {
-                    objectOffsets[obj] = obj.transform.position - avgPos;
+                    foreach (GameObject obj in LevelEditorController.targetObjects)
+                    {
+                        objectOffsets[obj] = obj.transform.position - avgPos;
+                    }
+                }
+                // SCALE mode - Store initial scale for each object
+                else if (mode == 1)
+                {
+                    foreach (GameObject obj in LevelEditorController.targetObjects)
+                    {
+                        initialScales[obj] = obj.transform.localScale;
+                    }
                 }
             }
 
-            if (Mouse.current.leftButton.isPressed)
+            // Update plane positions to follow the objects while dragging
+            if (isDragging && mode == 0)
+            {
+                if (gizmoSelected.name == "GizmoX")
+                {
+                    plane1.transform.position = avgPos;
+                    plane2.transform.position = avgPos;
+                }
+                else if (gizmoSelected.name == "GizmoZ")
+                {
+                    plane1.transform.position = avgPos;
+                    plane2.transform.position = avgPos;
+                }
+                else if (gizmoSelected.name == "GizmoY")
+                {
+                    plane1.transform.position = avgPos;
+                    plane2.transform.position = avgPos;
+                }
+            }
+
+            if (Mouse.current.leftButton.isPressed && isDragging)
             {
                 // MOVE
                 if (mode == 0)
                 {
                     Vector3 newGizmoPos = avgPos; // Start with current position
-
                     // Calculate new gizmo position based on selected axis
                     if (gizmoSelected.name == "GizmoX")
                         newGizmoPos = new Vector3(planeHit.point.x, avgPos.y, avgPos.z);
@@ -159,37 +273,50 @@ public class GizmoHandler : MonoBehaviour
                         newGizmoPos = new Vector3(avgPos.x, avgPos.y, planeHit.point.z);
                     else if (gizmoSelected.name == "GizmoY")
                         newGizmoPos = new Vector3(avgPos.x, planeHit.point.y, avgPos.z);
-
+                    // Apply snapping to the new position
+                    newGizmoPos = SnapVector3(newGizmoPos, positionSnapSize);
                     // Move all objects maintaining their relative positions
                     foreach (GameObject obj in LevelEditorController.targetObjects)
                     {
-                        obj.transform.position = newGizmoPos + objectOffsets[obj];
+                        if (objectOffsets.ContainsKey(obj))
+                        {
+                            obj.transform.position = newGizmoPos + objectOffsets[obj];
+                        }
                     }
                 }
                 // SCALE
                 else if (mode == 1)
                 {
+                    // Calculate scale factor based on plane hit distance from starting position
+                    float scaleAmount = 0f;
+
+                    if (gizmoSelected.name == "GizmoX")
+                        scaleAmount = planeHit.point.x - dragStartPoint.x;
+                    else if (gizmoSelected.name == "GizmoZ")
+                        scaleAmount = planeHit.point.z - dragStartPoint.z;
+                    else if (gizmoSelected.name == "GizmoY")
+                        scaleAmount = planeHit.point.y - dragStartPoint.y;
+
                     foreach (GameObject obj in LevelEditorController.targetObjects)
                     {
-                        if (gizmoSelected.name == "GizmoX")
-                            obj.transform.localScale += new Vector3(Mouse.current.delta.ReadValue().x * Time.deltaTime, 0, 0);
-                        else if (gizmoSelected.name == "GizmoZ")
-                            obj.transform.localScale += new Vector3(0, 0, Mouse.current.delta.ReadValue().x * Time.deltaTime);
-                        else if (gizmoSelected.name == "GizmoY")
-                            obj.transform.localScale += new Vector3(0, Mouse.current.delta.ReadValue().y * Time.deltaTime, 0);
-                    }
-                }
-                // ROTATE
-                else if (mode == 2)
-                {
-                    foreach (GameObject obj in LevelEditorController.targetObjects)
-                    {
-                        if (gizmoSelected.name == "GizmoX")
-                            obj.transform.RotateAround(avgPos, Vector3.right, Mouse.current.delta.ReadValue().x * Time.deltaTime * 90);
-                        else if (gizmoSelected.name == "GizmoZ")
-                            obj.transform.RotateAround(avgPos, Vector3.forward, Mouse.current.delta.ReadValue().x * Time.deltaTime * 90);
-                        else if (gizmoSelected.name == "GizmoY")
-                            obj.transform.RotateAround(avgPos, Vector3.up, Mouse.current.delta.ReadValue().y * Time.deltaTime * 90);
+                        if (initialScales.ContainsKey(obj))
+                        {
+                            Vector3 newScale = initialScales[obj]; // Use stored initial scale
+
+                            if (gizmoSelected.name == "GizmoX")
+                                newScale.x = initialScales[obj].x + scaleAmount;
+                            else if (gizmoSelected.name == "GizmoZ")
+                                newScale.z = initialScales[obj].z + scaleAmount;
+                            else if (gizmoSelected.name == "GizmoY")
+                                newScale.y = initialScales[obj].y + scaleAmount;
+
+                            // Prevent negative scaling
+                            newScale.x = Mathf.Max(0.01f, newScale.x);
+                            newScale.y = Mathf.Max(0.01f, newScale.y);
+                            newScale.z = Mathf.Max(0.01f, newScale.z);
+
+                            obj.transform.localScale = SnapVector3(newScale, scaleSnapSize);
+                        }
                     }
                 }
             }
@@ -204,6 +331,61 @@ public class GizmoHandler : MonoBehaviour
             if (!Mouse.current.leftButton.isPressed)
             {
                 GizmoUnselected();
+            }
+        }
+
+        if (Mouse.current.leftButton.isPressed)
+        {
+            // ROTATE
+            if (mode == 2)
+            {
+                float rotationDelta = 0f;
+                Vector3 rotationAxis = Vector3.zero;
+
+                if (gizmoSelected.name == "GizmoX")
+                {
+                    rotationDelta = Mouse.current.delta.ReadValue().x * Time.deltaTime * 90;
+                    rotationAxis = Vector3.right;
+                }
+                else if (gizmoSelected.name == "GizmoZ")
+                {
+                    rotationDelta = Mouse.current.delta.ReadValue().x * Time.deltaTime * 90;
+                    rotationAxis = Vector3.forward;
+                }
+                else if (gizmoSelected.name == "GizmoY")
+                {
+                    rotationDelta = Mouse.current.delta.ReadValue().y * Time.deltaTime * 90;
+                    rotationAxis = Vector3.up;
+                }
+
+                if (snapEnabled)
+                {
+                    rotationAmount += rotationDelta;
+
+                    // Only rotate when we've accumulated enough rotation
+                    if (Mathf.Abs(rotationAmount) >= rotationSnapSize)
+                    {
+                        // Calculate how many snap increments to apply
+                        float snappedRotation = Mathf.Floor(Mathf.Abs(rotationAmount) / rotationSnapSize) * rotationSnapSize * Mathf.Sign(rotationAmount);
+
+                        // Apply the rotation to all objects at once
+                        foreach (GameObject obj in LevelEditorController.targetObjects)
+                        {
+                            obj.transform.RotateAround(avgPos, rotationAxis, snappedRotation);
+                        }
+
+                        // Subtract the applied rotation from the accumulator
+                        rotationAmount -= snappedRotation;
+                    }
+                }
+                else
+                {
+                    // When snapping is disabled, apply rotation directly to all objects
+                    foreach (GameObject obj in LevelEditorController.targetObjects)
+                    {
+                        obj.transform.RotateAround(avgPos, rotationAxis, rotationDelta);
+                    }
+                }
             }
         }
     }
