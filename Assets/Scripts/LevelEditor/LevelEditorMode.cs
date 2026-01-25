@@ -14,13 +14,13 @@ public class LevelEditorMode : MonoBehaviour
     public Quaternion editorRotation;
 
     
-    private enum Mode
+    public enum Mode
     {
         Play,
         Edit
     }
 
-    private Mode mode;
+    public static Mode mode;
     public void Start()
     {
         

@@ -47,6 +47,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPointObject
   type: Spawn
+  mask:
+    serializedVersion: 2
+    m_Bits: 0
+  SurfaceNormalRotation: 0
+  categoryType: Special
 --- !u!65 &5203589532593200692
 BoxCollider:
   m_ObjectHideFlags: 0
