@@ -200,9 +200,57 @@ public class GizmoHandler : MonoBehaviour
             Snap(value.z, origin.z)
         );
     }
-
-    public void Update()
+    private GameObject currentHoveredGizmo;
+    private Vector3 originalScale;
+    [SerializeField] private float hoverScaleMultiplier = 1.2f;
+    public void HoverOverGizmo(GameObject gizmo)
     {
+        // If we're already hovering this gizmo, do nothing
+        if (currentHoveredGizmo == gizmo)
+            return;
+
+        // Restore previous gizmo scale
+        if (currentHoveredGizmo != null)
+        {
+            currentHoveredGizmo.transform.localScale = originalScale;
+
+        }
+
+        // Assign new hovered gizmo
+        currentHoveredGizmo = gizmo;
+        originalScale = gizmo.transform.localScale;
+
+        // Apply hover scale
+        gizmo.transform.localScale = originalScale * hoverScaleMultiplier;
+    }
+
+    private void ClearHover()
+    {
+        if (currentHoveredGizmo != null)
+        {
+            currentHoveredGizmo.transform.localScale = originalScale;
+            currentHoveredGizmo = null;
+        }
+    }
+
+    private void Update()
+    {
+        if (!isDragging)
+        {
+            Ray gizmoRay = editorCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+
+            if (Physics.Raycast(gizmoRay, out RaycastHit hit, 100f, LayerMask.GetMask("Gizmo")))
+            {
+                HoverOverGizmo(hit.collider.gameObject.transform.parent.gameObject);
+            }
+            else
+            {
+                ClearHover();
+            }
+
+        }
+
+
         if (gizmoSelected == null) return;
 
         // Center gizmo on selected objects
@@ -325,7 +373,7 @@ public class GizmoHandler : MonoBehaviour
                         if (initialScales.ContainsKey(obj))
                         {
                             Vector3 newScale = initialScales[obj]; // Use stored initial scale
-
+                            Vector3 tempScale = newScale;
                             if (gizmoSelected.name == "GizmoX")
                                 newScale.x = initialScales[obj].x + scaleAmount;
                             else if (gizmoSelected.name == "GizmoZ")
@@ -339,7 +387,7 @@ public class GizmoHandler : MonoBehaviour
                             newScale.z = Mathf.Max(0.01f, newScale.z);
                             if (snapEnabled)
                             {
-                                obj.transform.localScale = SnapVector3(newScale, scaleSnapSize, avgPos);
+                                obj.transform.localScale = SnapVector3(newScale, scaleSnapSize, tempScale);
                             }
                             else
                             {
