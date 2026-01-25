@@ -1,4 +1,5 @@
 ﻿using JetBrains.Annotations;
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -32,6 +33,8 @@ public class GizmoHandler : MonoBehaviour
     private bool isDragging = false;
     private Vector3 lastAvgPos;
     private Vector3 dragStartPoint;
+
+    public static event Action<int> OnModeSwitch;
     private bool IsPointerOverUI()
     {
         if (EventSystem.current == null)
@@ -59,6 +62,7 @@ public class GizmoHandler : MonoBehaviour
     public void ChangeMode(int m)
     {
         mode = m;
+        OnModeSwitch?.Invoke(mode);
         foreach (TMP_Text text in editorButtons)
         {
             text.color = Color.white;
@@ -81,7 +85,8 @@ public class GizmoHandler : MonoBehaviour
             public void Start()
             {
         snapEnabled = true;
-                plane1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        OnModeSwitch?.Invoke(mode);
+        plane1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 plane1.layer = LayerMask.NameToLayer("Plane");
                 MakeTransparent(plane1);
                 plane1.SetActive(false);
