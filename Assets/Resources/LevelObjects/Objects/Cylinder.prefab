@@ -121,7 +121,7 @@ MonoBehaviour:
   mask:
     serializedVersion: 2
     m_Bits: 0
-  SurfaceNormalRotation: 0
+  SurfaceNormalRotation: 1
   categoryType: Objects
   meshRenderer: {fileID: 7833718740123932363}
 --- !u!64 &5758756310518081062

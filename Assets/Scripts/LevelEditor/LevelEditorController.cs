@@ -23,10 +23,12 @@ public class LevelEditorController : MonoBehaviour
     public Transform levelParent;
     public static GameObject selectedObject;
     public GameObject startObject;
+    public bool autoRotate = true;
+    public TMP_Text autoRotateText;
 
     public TMP_Text selectText;
     public TMP_Text placeText;
-
+    public RectTransform selection;
     // --------------------------------------------------
     // Placement
     // --------------------------------------------------
@@ -109,7 +111,19 @@ public class LevelEditorController : MonoBehaviour
         selectText.color = new UnityEngine.Color(60f / 255f, 93f / 255f, 255, 255);
         placeText.color = UnityEngine.Color.white;
     }
-
+    public void ToggleAutoRotate()
+    {
+        autoRotate = !autoRotate;
+        if (autoRotate)
+        {
+            autoRotateText.color = new UnityEngine.Color(0f, 1f, 0f);
+        }
+        else
+        {
+            ghost.transform.rotation = Quaternion.identity;
+            autoRotateText.color = new UnityEngine.Color(1f, 0f, 0f);
+        }
+    }
     public void SetPlaceMode()
     {
         GizmoHandler.GizmoUnselected();
@@ -170,11 +184,13 @@ public class LevelEditorController : MonoBehaviour
 
     void DrawRectBorder(Rect rect, float thickness, UnityEngine.Color color)
     {
-     //   EditorGUI.DrawRect(new Rect(rect.x, rect.y, rect.width, thickness), color);
-      //  EditorGUI.DrawRect(new Rect(rect.x, rect.yMax - thickness, rect.width, thickness), color);
-      //  EditorGUI.DrawRect(new Rect(rect.x, rect.y, thickness, rect.height), color);
-      //  EditorGUI.DrawRect(new Rect(rect.xMax - thickness, rect.y, thickness, rect.height), color);
+     
+        selection.anchoredPosition = rect.position;
+        selection.sizeDelta = rect.size;
+
+      
     }
+
 
     void Update()
     {
@@ -402,7 +418,7 @@ public class LevelEditorController : MonoBehaviour
 
 
             // Align spike's Y+ axis with the surface normal
-            if (selectedObject.GetComponent<LevelObject>().SurfaceNormalRotation)
+            if (selectedObject.GetComponent<LevelObject>().SurfaceNormalRotation && autoRotate)
             {
                 ghost.transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
             }
@@ -416,7 +432,7 @@ public class LevelEditorController : MonoBehaviour
     void PlaceBlock()
     {
         if (!ghost.activeSelf) return;
-        if (selectedObject.GetComponent<LevelObject>().SurfaceNormalRotation)
+        if (selectedObject.GetComponent<LevelObject>().SurfaceNormalRotation && autoRotate)
         {
             Instantiate(selectedObject, ghost.transform.position, ghost.transform.rotation, levelParent);
         }
