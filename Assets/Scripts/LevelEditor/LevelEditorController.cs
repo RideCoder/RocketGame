@@ -170,10 +170,10 @@ public class LevelEditorController : MonoBehaviour
 
     void DrawRectBorder(Rect rect, float thickness, UnityEngine.Color color)
     {
-        EditorGUI.DrawRect(new Rect(rect.x, rect.y, rect.width, thickness), color);
-        EditorGUI.DrawRect(new Rect(rect.x, rect.yMax - thickness, rect.width, thickness), color);
-        EditorGUI.DrawRect(new Rect(rect.x, rect.y, thickness, rect.height), color);
-        EditorGUI.DrawRect(new Rect(rect.xMax - thickness, rect.y, thickness, rect.height), color);
+     //   EditorGUI.DrawRect(new Rect(rect.x, rect.y, rect.width, thickness), color);
+      //  EditorGUI.DrawRect(new Rect(rect.x, rect.yMax - thickness, rect.width, thickness), color);
+      //  EditorGUI.DrawRect(new Rect(rect.x, rect.y, thickness, rect.height), color);
+      //  EditorGUI.DrawRect(new Rect(rect.xMax - thickness, rect.y, thickness, rect.height), color);
     }
 
     void Update()
