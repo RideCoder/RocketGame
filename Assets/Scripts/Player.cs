@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     {
        if (collision.gameObject.layer == 7)
         {
-            Debug.Log(collision.gameObject.name);
+          
             OnPlayerDeath?.Invoke();
         }
         else if (collision.gameObject.GetComponent<Goal>() != null)

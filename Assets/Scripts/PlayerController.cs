@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 
 public class PlayerController : MonoBehaviour
 {
@@ -36,8 +37,10 @@ public class PlayerController : MonoBehaviour
         }
 
         // Thrust (hold to go up)
-        Debug.Log(OptionsMenu.buttons);
-        if (OptionsMenu.buttons[OptionsMenu.boostInputIndex].isPressed)
+     
+        //Add this later to if statement
+        //OptionsMenu.buttons[OptionsMenu.boostInputIndex].isPressed
+        if (Mouse.current.leftButton.isPressed)
         {
             propulsion.relativeForce = new Vector3(0f, thrustForce, 0f);
             particleSystem.enableEmission = true;

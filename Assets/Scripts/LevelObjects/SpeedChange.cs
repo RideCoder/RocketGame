@@ -10,7 +10,7 @@ public class SpeedChange : MonoBehaviour
         
         if (other.gameObject.transform.parent.TryGetComponent<PlayerController>(out PlayerController plr))
         {
-            Debug.Log("TEST");
+         
             plr.forwardSpeed = speedChange;
             plr.thrustForce = thrustSpeed;
         }

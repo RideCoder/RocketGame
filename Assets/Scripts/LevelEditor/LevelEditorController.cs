@@ -99,6 +99,9 @@ public class LevelEditorController : MonoBehaviour
     {
         if (Instance == this)
             Instance = null;
+  
+        LoadObjectList.OnObjectSelected -= UpdateSelected;
+    
     }
 
     // --------------------------------------------------
@@ -149,6 +152,7 @@ public class LevelEditorController : MonoBehaviour
     {
         LoadObjectList.OnObjectSelected += UpdateSelected;
         selectedObject = startObject;
+        Debug.Log("TESt");
         CreateGhost();
         dragging = false;
         targetObjects.Clear();
@@ -345,8 +349,11 @@ public class LevelEditorController : MonoBehaviour
         Vector3 avg = Vector3.zero;
         foreach (var obj in targetObjects)
             avg += obj.transform.position;
-
-        positionGizmo.transform.position = avg / targetObjects.Count;
+        if (targetObjects.Count > 0)
+        {
+            positionGizmo.transform.position = avg / targetObjects.Count;
+        }
+        
         if (mode == 1)
         {
             positionGizmo.transform.rotation = targetObjects[0].transform.rotation;

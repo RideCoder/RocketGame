@@ -10,7 +10,7 @@ public class LoadLevel : MonoBehaviour
     public GameObject missingObject;
     [Header("Prefabs")]
     public List<GameObject> levelObjects = new List<GameObject>();
-
+    public string loadLevel;
 
 
     Dictionary<string, GameObject> prefabMap;
@@ -30,8 +30,16 @@ public class LoadLevel : MonoBehaviour
     }
     void Start()
     {
+        string path;
+        if (loadLevel != "")
+        {
+            path = Path.Combine(Application.streamingAssetsPath, "Levels/" + loadLevel + ".json");
+        }
+        else
+        {
+            path = Path.Combine(Application.streamingAssetsPath, "Levels/" + LevelSelection.SelectedLevel);
+        }
 
-        string path = Path.Combine(Application.streamingAssetsPath, "Levels/"+LevelSelection.SelectedLevel);
 
         if (!File.Exists(path))
         {
