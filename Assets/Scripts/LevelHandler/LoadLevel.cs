@@ -33,10 +33,12 @@ public class LoadLevel : MonoBehaviour
         string path;
         if (loadLevel != "")
         {
+           
             path = Path.Combine(Application.streamingAssetsPath, "Levels/" + loadLevel + ".json");
         }
         else
         {
+            Debug.Log(LevelSelection.SelectedLevel);
             path = Path.Combine(Application.streamingAssetsPath, "Levels/" + LevelSelection.SelectedLevel);
         }
 
