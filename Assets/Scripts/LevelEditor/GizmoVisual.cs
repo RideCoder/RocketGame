@@ -6,7 +6,7 @@ public class GizmoVisual : MonoBehaviour
     public GameObject[] rotationGizmos;
     public GameObject[] scaleGizmos;
 
-    public void Awake()
+    public void Start()
     {
         GizmoHandler.OnModeSwitch += VisualMode;
     }
