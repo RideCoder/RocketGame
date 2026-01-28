@@ -82,7 +82,7 @@ public class GizmoHandler : MonoBehaviour
             snapText.color = Color.red;
         }
     }
-            public void Start()
+            public void Awake()
             {
         snapEnabled = true;
         OnModeSwitch?.Invoke(mode);

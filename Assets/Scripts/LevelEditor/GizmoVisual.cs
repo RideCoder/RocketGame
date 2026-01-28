@@ -8,7 +8,7 @@ public class GizmoVisual : MonoBehaviour
 
     public void Start()
     {
-        GizmoHandler.OnModeSwitch += VisualMode;
+   //     GizmoHandler.OnModeSwitch += VisualMode;
     }
     public void VisualMode(int mode)
     {
