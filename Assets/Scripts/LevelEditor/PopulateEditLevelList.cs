@@ -9,7 +9,7 @@ public class PopulateEditLevelList : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public GameObject levelsList;
     public GameObject button;
-
+    public GameObject newLevelButton;
 
 
     public void Start()
@@ -17,7 +17,7 @@ public class PopulateEditLevelList : MonoBehaviour
         string path = Path.Combine(Application.streamingAssetsPath, "Levels");
 
         var info = new DirectoryInfo(path);
-
+        newLevelButton.GetComponent<Button>().onClick.AddListener(() => LoadCustomLevel(""));
         if (info.GetFiles().Length == 0)
         {
             Debug.Log("No levels found");
