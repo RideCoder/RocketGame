@@ -348,16 +348,23 @@ public class LevelEditorController : MonoBehaviour
 
         Vector3 avg = Vector3.zero;
         foreach (var obj in targetObjects)
-            avg += obj.transform.position;
-        if (targetObjects.Count > 0)
         {
-            positionGizmo.transform.position = avg / targetObjects.Count;
+            Debug.Log(obj);
+            if (obj != null)
+            {
+
+                avg += obj.transform.position;
+            }
         }
-        
-        if (mode == 1)
-        {
-            positionGizmo.transform.rotation = targetObjects[0].transform.rotation;
-        }
+            if (targetObjects.Count > 0)
+            {
+                positionGizmo.transform.position = avg / targetObjects.Count;
+            }
+
+            if (mode == 1)
+            {
+                positionGizmo.transform.rotation = targetObjects[0].transform.rotation;
+            }
         
     }
 
