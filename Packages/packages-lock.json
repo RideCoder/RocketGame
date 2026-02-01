@@ -10,6 +10,12 @@
       },
       "hash": "e528f487c0ffe3374d405ead2cc42fdf93903928"
     },
+    "com.lootlocker.lootlockersdk": {
+      "version": "file:C:/Users/kcjan/Downloads/unity-sdk-7.0.0",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {}
+    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 2,

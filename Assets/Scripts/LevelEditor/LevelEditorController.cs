@@ -92,6 +92,7 @@ public class LevelEditorController : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+        Debug.Log(positionGizmo);
         Instance = this;
     }
 
@@ -350,22 +351,26 @@ public class LevelEditorController : MonoBehaviour
         foreach (var obj in targetObjects)
         {
             Debug.Log(obj);
+            Debug.Log(targetObjects.Count);
+            Debug.Log(positionGizmo);
             if (obj != null)
             {
 
                 avg += obj.transform.position;
             }
         }
+        if (positionGizmo != null)
+        {
             if (targetObjects.Count > 0)
             {
                 positionGizmo.transform.position = avg / targetObjects.Count;
             }
 
-            if (mode == 1)
+            if (mode == 1 && targetObjects[0] != null)
             {
                 positionGizmo.transform.rotation = targetObjects[0].transform.rotation;
             }
-        
+        }
     }
 
     // --------------------------------------------------
