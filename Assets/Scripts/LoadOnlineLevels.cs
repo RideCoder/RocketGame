@@ -45,6 +45,7 @@ public class LoadOnlineLevels : MonoBehaviour
 
 
                 GameObject clone = Instantiate(button);
+             
                 clone.transform.parent = levelsList.transform;
 
                 clone.transform.GetChild(0).GetComponent<TMP_Text>().text = asset.name;

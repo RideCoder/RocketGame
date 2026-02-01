@@ -7,6 +7,6 @@ public class DiscordLinkManager : MonoBehaviour
     public void OpenDiscordServer()
     {
         // Replace "YOUR_DISCORD_INVITE_LINK" with your actual Discord server invite link
-        Application.OpenURL("https://discord.gg/nSZYVjms");
+        Application.OpenURL("https://discord.gg/Ybya4k2662");
     }
 }
