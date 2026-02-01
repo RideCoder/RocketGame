@@ -1372,6 +1372,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 697517857}
   m_CullTransparentMesh: 1
+--- !u!1 &762014060
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 762014062}
+  - component: {fileID: 762014061}
+  m_Layer: 0
+  m_Name: LootLockerManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &762014061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 762014060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06a1dd566996c44469d50518fcac986e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LootLockerManager
+--- !u!4 &762014062
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 762014060}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.87244, y: 5.59935, z: 27.14004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &820324879
 GameObject:
   m_ObjectHideFlags: 0
@@ -3539,9 +3583,9 @@ GameObject:
   - component: {fileID: 1711175151}
   - component: {fileID: 1711175154}
   - component: {fileID: 1711175152}
-  - component: {fileID: 1711175155}
   - component: {fileID: 1711175157}
   - component: {fileID: 1711175156}
+  - component: {fileID: 1711175158}
   m_Layer: 5
   m_Name: CustomLevelList
   m_TagString: Untagged
@@ -3608,20 +3652,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1711175150}
   m_CullTransparentMesh: 1
---- !u!114 &1711175155
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1711175150}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1aaf9b3ff6a69b4d802515d6b40a494, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PopulateCustomLevelList
-  levelsList: {fileID: 309423591}
-  button: {fileID: 4959329136966637816, guid: 63c695835dca7e44f96633156c5690d3, type: 3}
 --- !u!114 &1711175156
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3664,6 +3694,20 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!114 &1711175158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1711175150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43eb9f4cab4a69e4ba805fbae47bf7ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LoadOnlineLevels
+  levelsList: {fileID: 309423591}
+  button: {fileID: 4959329136966637816, guid: 63c695835dca7e44f96633156c5690d3, type: 3}
 --- !u!1 &1733089773
 GameObject:
   m_ObjectHideFlags: 0
@@ -4599,6 +4643,18 @@ MonoBehaviour:
           m_StringArgument: Level Editor
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 762014061}
+        m_TargetAssemblyTypeName: LootLockerManager, Assembly-CSharp
+        m_MethodName: Login
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2131016088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4788,3 +4844,4 @@ SceneRoots:
   - {fileID: 148540884}
   - {fileID: 145014016}
   - {fileID: 1105805435}
+  - {fileID: 762014062}

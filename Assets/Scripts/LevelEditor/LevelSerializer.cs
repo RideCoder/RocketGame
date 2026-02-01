@@ -9,12 +9,14 @@ public class LevelSerializer : MonoBehaviour
     public Transform levelParent;
 
     public TMP_InputField inputField;
+    public string levelName;
     public void Save()
     {
         Debug.Log("WHAT");
 
         LevelData level = new LevelData();
         level.levelName = inputField.text;
+        levelName = level.levelName;
         Debug.Log(level.levelName);
         level.gravity = -9.81f;
 

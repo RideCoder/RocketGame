@@ -1,0 +1,84 @@
+{
+    "levelName": "grse",
+    "gravity": -9.8100004196167,
+    "objects": [
+        {
+            "type": "Spawn",
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "xScale": 1.0,
+            "yScale": 1.0,
+            "zScale": 1.0,
+            "xRotation": 0.0,
+            "yRotation": 0.0,
+            "zRotation": 0.0,
+            "jsonData": ""
+        },
+        {
+            "type": "Brick",
+            "x": 0.0,
+            "y": -2.0,
+            "z": 10.0,
+            "xScale": 5.0,
+            "yScale": 1.0,
+            "zScale": 5.0,
+            "xRotation": 0.0,
+            "yRotation": 0.0,
+            "zRotation": 0.0,
+            "jsonData": "{\"color\":{\"r\":1.0,\"g\":1.0,\"b\":1.0,\"a\":1.0}}"
+        },
+        {
+            "type": "Spike",
+            "x": -2.0,
+            "y": -1.0,
+            "z": 10.0,
+            "xScale": 1.0,
+            "yScale": 1.0,
+            "zScale": 1.0,
+            "xRotation": 0.0,
+            "yRotation": 0.0,
+            "zRotation": 0.0,
+            "jsonData": "{\"color\":{\"r\":0.5,\"g\":0.5,\"b\":0.5,\"a\":1.0}}"
+        },
+        {
+            "type": "Spike",
+            "x": -1.0,
+            "y": -1.0,
+            "z": 10.0,
+            "xScale": 1.0,
+            "yScale": 1.0,
+            "zScale": 1.0,
+            "xRotation": 0.0,
+            "yRotation": 0.0,
+            "zRotation": 0.0,
+            "jsonData": "{\"color\":{\"r\":0.5,\"g\":0.5,\"b\":0.5,\"a\":1.0}}"
+        },
+        {
+            "type": "Spike",
+            "x": 0.0,
+            "y": -1.0,
+            "z": 9.0,
+            "xScale": 1.0,
+            "yScale": 1.0,
+            "zScale": 1.0,
+            "xRotation": 0.0,
+            "yRotation": 0.0,
+            "zRotation": 0.0,
+            "jsonData": "{\"color\":{\"r\":0.5,\"g\":0.5,\"b\":0.5,\"a\":1.0}}"
+        },
+        {
+            "type": "Spike",
+            "x": 2.0,
+            "y": -1.0,
+            "z": 9.0,
+            "xScale": 1.0,
+            "yScale": 1.0,
+            "zScale": 1.0,
+            "xRotation": 0.0,
+            "yRotation": 0.0,
+            "zRotation": 0.0,
+            "jsonData": "{\"color\":{\"r\":0.5,\"g\":0.5,\"b\":0.5,\"a\":1.0}}"
+        }
+    ]
+}

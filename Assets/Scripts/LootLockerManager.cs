@@ -10,11 +10,12 @@ public class LootLockerManager : MonoBehaviour
         {
             if (response.success)
             {
-                SceneManager.LoadScene(3);
+                Debug.Log("logged in");
+              //  SceneManager.LoadScene(3);
             }
             else
             {
-
+                Debug.Log("FAILRE");
             }
         });
     }

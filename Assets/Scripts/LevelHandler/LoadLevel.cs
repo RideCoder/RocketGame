@@ -31,6 +31,16 @@ public class LoadLevel : MonoBehaviour
     void Start()
     {
         string path;
+        if (LoadOnlineLevels.LevelJson != null)
+        {
+            LevelData jsonLevelData = JsonUtility.FromJson<LevelData>(LoadOnlineLevels.LevelJson);
+            Debug.Log(LoadOnlineLevels.LevelJson);
+            Debug.Log("Loaded level: " + jsonLevelData.levelName);
+            Debug.Log("Gravity: " + jsonLevelData.gravity);
+            LoadOnlineLevels.LevelJson = null;
+            SpawnObjects(jsonLevelData);
+            return;
+        }
         if (loadLevel != "")
         {
            
@@ -63,7 +73,10 @@ public class LoadLevel : MonoBehaviour
 
     void SpawnObjects(LevelData levelData)
     {
-        
+        foreach (Transform obj in levelParent.transform)
+        {
+            Destroy(obj.gameObject);
+        }
         foreach (LevelObjectData obj in levelData.objects)
         {
             if (obj.type == "Spawn")
