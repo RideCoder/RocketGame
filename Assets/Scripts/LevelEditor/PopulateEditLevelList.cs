@@ -14,8 +14,8 @@ public class PopulateEditLevelList : MonoBehaviour
 
     public void Start()
     {
-        string path = Path.Combine(Application.streamingAssetsPath, "Levels");
-
+        string path = Path.Combine(Application.persistentDataPath, "Levels");
+        Debug.Log(path);
         var info = new DirectoryInfo(path);
         newLevelButton.GetComponent<Button>().onClick.AddListener(() => LoadCustomLevel(""));
         if (info.GetFiles().Length == 0)

@@ -1,24 +1,22 @@
-using UnityEngine;
-using System.IO;
-using Unity.VisualScripting;
 using System.Collections.Generic;
+using System.IO;
+using UnityEngine;
+
 public class LoadLevel : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-
     public GameObject levelParent;
     public GameObject missingObject;
+
     [Header("Prefabs")]
     public List<GameObject> levelObjects = new List<GameObject>();
     public string loadLevel;
 
-
-    Dictionary<string, GameObject> prefabMap;
+    private Dictionary<string, GameObject> prefabMap;
     public Vector3 spawnPosition;
 
     private void Awake()
     {
-
+        // Load all prefabs from Resources folder
         levelObjects.AddRange(Resources.LoadAll<GameObject>("LevelObjects"));
         prefabMap = new Dictionary<string, GameObject>();
 
@@ -26,88 +24,80 @@ public class LoadLevel : MonoBehaviour
         {
             prefabMap.Add(obj.GetComponent<LevelObject>().type, obj);
         }
-       
     }
-    void Start()
+
+    private void Start()
     {
-        string path;
+        string json = null;
+
+        // 1. Load level JSON from online source if available
         if (LoadOnlineLevels.LevelJson != null)
         {
-            LevelData jsonLevelData = JsonUtility.FromJson<LevelData>(LoadOnlineLevels.LevelJson);
-            Debug.Log(LoadOnlineLevels.LevelJson);
-            Debug.Log("Loaded level: " + jsonLevelData.levelName);
-            Debug.Log("Gravity: " + jsonLevelData.gravity);
+            json = LoadOnlineLevels.LevelJson;
             LoadOnlineLevels.LevelJson = null;
-            SpawnObjects(jsonLevelData);
-            return;
-        }
-        if (loadLevel != "")
-        {
-           
-            path = Path.Combine(Application.streamingAssetsPath, "Levels/" + loadLevel + ".json");
         }
         else
         {
-            Debug.Log(LevelSelection.SelectedLevel);
-            path = Path.Combine(Application.streamingAssetsPath, "Levels/" + LevelSelection.SelectedLevel);
+            // 2. Load level JSON from local persistent storage (WebGL safe)
+            string dir = Path.Combine(Application.persistentDataPath, "Levels");
+            Directory.CreateDirectory(dir);
+
+            string fileName = !string.IsNullOrEmpty(loadLevel) ? loadLevel + ".json" : LevelSelection.SelectedLevel;
+            string path = Path.Combine(dir, fileName);
+
+            if (!File.Exists(path))
+            {
+                Debug.LogWarning("Level file not found: " + path);
+                return;
+            }
+
+            json = File.ReadAllText(path);
         }
 
-
-        if (!File.Exists(path))
+        if (!string.IsNullOrEmpty(json))
         {
-            Debug.Log("Level file not found: " + path);
-            return;
+            LevelData levelData = JsonUtility.FromJson<LevelData>(json);
+            Debug.Log("Loaded level: " + levelData.levelName);
+            Debug.Log("Gravity: " + levelData.gravity);
+            SpawnObjects(levelData);
         }
-
-        string json = File.ReadAllText(path);
-
-        LevelData levelData = JsonUtility.FromJson<LevelData>(json);
-
-        Debug.Log("Loaded level: " + levelData.levelName);
-        Debug.Log("Gravity: " + levelData.gravity);
-      
-        SpawnObjects(levelData);
-        
-
     }
 
-    void SpawnObjects(LevelData levelData)
+    private void SpawnObjects(LevelData levelData)
     {
+        // Clear previous objects
         foreach (Transform obj in levelParent.transform)
         {
             Destroy(obj.gameObject);
         }
+
         foreach (LevelObjectData obj in levelData.objects)
         {
             if (obj.type == "Spawn")
             {
-                spawnPosition = new Vector3(obj.x,obj.y, obj.z);
+                spawnPosition = new Vector3(obj.x, obj.y, obj.z);
             }
-            
+
             if (!prefabMap.TryGetValue(obj.type, out GameObject prefab))
             {
-                
-                GameObject missing = Instantiate(missingObject, new Vector3(obj.x, obj.y, obj.z), Quaternion.identity, levelParent.transform);
+                // Instantiate missing object placeholder
+                GameObject missing = Instantiate(missingObject, new Vector3(obj.x, obj.y, obj.z),
+                    Quaternion.identity, levelParent.transform);
                 missing.transform.localScale = new Vector3(obj.xScale, obj.yScale, obj.zScale);
                 missing.transform.eulerAngles = new Vector3(obj.xRotation, obj.yRotation, obj.zRotation);
-              
                 Debug.LogWarning("Unknown object type: " + obj.type);
                 continue;
             }
-            prefabMap.TryGetValue(obj.type, out GameObject objPrefab);
-            
 
-            Vector3 position = new Vector3(obj.x, obj.y, obj.z);
-            Vector3 scale = new Vector3(obj.xScale, obj.yScale, obj.zScale);
-            Vector3 rotation = new Vector3(obj.xRotation, obj.yRotation, obj.zRotation);
-            GameObject newObject = Instantiate(objPrefab,position,Quaternion.identity,levelParent.transform);
-            newObject.transform.localScale = scale;
-            newObject.transform.eulerAngles = rotation;
-            LevelObject lo = newObject.GetComponent<LevelObject>();
-            if (lo != null)
-            {
-                lo.DeserializeExtraData(obj.jsonData);
-            }
+            // Instantiate prefab
+            GameObject newObj = Instantiate(prefab, new Vector3(obj.x, obj.y, obj.z),
+                Quaternion.identity, levelParent.transform);
+            newObj.transform.localScale = new Vector3(obj.xScale, obj.yScale, obj.zScale);
+            newObj.transform.eulerAngles = new Vector3(obj.xRotation, obj.yRotation, obj.zRotation);
+
+            // Deserialize extra data
+            LevelObject lo = newObj.GetComponent<LevelObject>();
+            lo?.DeserializeExtraData(obj.jsonData);
         }
     }
 
@@ -115,7 +105,4 @@ public class LoadLevel : MonoBehaviour
     {
         return spawnPosition;
     }
-
-
-
 }

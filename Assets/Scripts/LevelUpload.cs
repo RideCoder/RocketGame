@@ -1,82 +1,75 @@
 using LootLocker.Requests;
 using System.IO;
+using System.Text;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class LevelUpload : MonoBehaviour
 {
     public TMP_InputField levelNameInputField;
-    private string levelName;
     public LevelSerializer levelSerializer;
-  
+
+    private string levelName;
+
     public void CreateLevel()
     {
         levelName = levelNameInputField.text;
+
         LootLockerSDKManager.CreatingAnAssetCandidate(levelName, (response) =>
         {
             if (response.success)
             {
-               
                 UploadLevelData(response.asset_candidate_id);
             }
             else
             {
-                Debug.Log(" REALY BAD");
+                Debug.LogError("Failed to create asset candidate: " + response.text);
             }
         });
     }
 
-    public void UploadLevelData(int levelID)
+    private void UploadLevelData(int levelID)
     {
-        // Save the level locally
-        levelSerializer.Save();
+        string json = levelSerializer.SerializeToJson();
 
-        // Construct the file path
-        string path = Path.Combine(Application.streamingAssetsPath, "Levels", levelSerializer.levelName + ".json");
+        // Save temporary file to persistentDataPath
+        string dir = Path.Combine(Application.persistentDataPath, "TempLevels");
+        Directory.CreateDirectory(dir);
 
-        // Upload the file to LootLocker
+        string path = Path.Combine(dir, levelSerializer.levelName + ".json");
+        File.WriteAllText(path, json);
+
+        // Upload using the path
         LootLockerSDKManager.AddingFilesToAssetCandidates(
             levelID,
             path,
             levelSerializer.levelName + ".json",
             LootLocker.LootLockerEnums.FilePurpose.file,
-            (textresponse) =>
+            (textResponse) =>
             {
-                if (textresponse.success)
+                if (textResponse.success)
                 {
                     Debug.Log("Upload successful!");
 
-                    // Update the asset candidate as approved
-                    LootLockerSDKManager.UpdatingAnAssetCandidate(levelID, true, (updatedResponse) =>
+                    // Approve the asset candidate
+                    LootLockerSDKManager.UpdatingAnAssetCandidate(levelID, true, (updateResponse) =>
                     {
-                        if (updatedResponse.success)
-                            Debug.Log("Asset candidate updated successfully!");
+                        if (updateResponse.success)
+                            Debug.Log("Asset candidate approved!");
                         else
-                            Debug.LogError("Failed to update asset candidate: " + updatedResponse.text);
+                            Debug.LogError("Failed to approve asset candidate: " + updateResponse.text);
                     });
 
-                    // Delete the local file
-                    if (File.Exists(path))
+                    // Delete temporary file
+                    try
                     {
-                        try
-                        {
-                            File.Delete(path);
-                            Debug.Log("Local file deleted successfully.");
-                        }
-                        catch (IOException e)
-                        {
-                            Debug.LogError("Failed to delete local file: " + e.Message);
-                        }
+                        File.Delete(path);
                     }
-                    else
-                    {
-                        Debug.LogWarning("File not found for deletion: " + path);
-                    }
+                    catch { }
                 }
                 else
                 {
-                    Debug.LogError("Upload failed: " + textresponse.text);
+                    Debug.LogError("Upload failed: " + textResponse.text);
                 }
             });
     }
