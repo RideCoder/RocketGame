@@ -7,6 +7,13 @@ public class LevelSerializer : MonoBehaviour
 {
     public Transform levelParent;
     public TMP_InputField inputField;
+
+    public TMP_InputField inputGravityFieldX;
+    public TMP_InputField inputGravityFieldY;
+    public TMP_InputField inputGravityFieldZ;
+    public TMP_InputField songIDField;
+    public TMP_InputField forwardSpeedField;
+    public TMP_InputField thrustSpeedField;
     public string levelName;
 
     /// <summary>
@@ -17,7 +24,30 @@ public class LevelSerializer : MonoBehaviour
         LevelData level = new LevelData();
         level.levelName = inputField.text;
         levelName = level.levelName;
-        level.gravity = -9.81f;
+        Vector3 gravity = new Vector3(0f, -9.81f, 0f);
+        if (inputGravityFieldX != null &&
+            inputGravityFieldY != null &&
+            inputGravityFieldZ != null &&
+            float.TryParse(inputGravityFieldX.text, out float gx) &&
+            float.TryParse(inputGravityFieldY.text, out float gy) &&
+            float.TryParse(inputGravityFieldZ.text, out float gz))
+        {
+            gravity = new Vector3(gx, gy, gz);
+        }
+
+        level.gravity = gravity;
+        int speed = 15;
+        if (forwardSpeedField != null && int.TryParse(forwardSpeedField.text, out speed))
+        {
+            level.forwardSpeed = speed;
+        }
+
+        int thrust = 30;
+        if (thrustSpeedField != null && int.TryParse(thrustSpeedField.text, out thrust))
+        {
+            level.thrustSpeed = thrust;
+        }
+
 
         List<LevelObjectData> objects = new();
 
@@ -66,7 +96,7 @@ public class LevelSerializer : MonoBehaviour
         LevelData level = new LevelData();
         level.levelName = inputField.text;
         levelName = level.levelName;
-        level.gravity = -9.81f;
+        level.gravity = new Vector3(0f, -9.81f, 0f);
 
         List<LevelObjectData> objects = new();
         foreach (Transform child in levelParent)

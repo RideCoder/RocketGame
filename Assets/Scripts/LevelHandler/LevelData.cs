@@ -5,7 +5,10 @@ using UnityEngine;
 public class LevelData
 {
     public string levelName;
-    public float gravity;
+    public Vector3 gravity;
+    public int thrustSpeed;
+    public int forwardSpeed;
+    public string songID;
     public LevelObjectData[] objects;
 }
 

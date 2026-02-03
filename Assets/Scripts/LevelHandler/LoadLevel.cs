@@ -13,6 +13,8 @@ public class LoadLevel : MonoBehaviour
 
     private Dictionary<string, GameObject> prefabMap;
     public Vector3 spawnPosition;
+    public PlayerController playerController;
+ 
 
     private void Awake()
     {
@@ -43,6 +45,12 @@ public class LoadLevel : MonoBehaviour
             Directory.CreateDirectory(dir);
 
             string fileName = !string.IsNullOrEmpty(loadLevel) ? loadLevel + ".json" : LevelSelection.SelectedLevel;
+            if (string.IsNullOrEmpty(fileName)) {
+                fileName = "";
+
+            }
+
+
             string path = Path.Combine(dir, fileName);
 
             if (!File.Exists(path))
@@ -60,9 +68,17 @@ public class LoadLevel : MonoBehaviour
             Debug.Log("Loaded level: " + levelData.levelName);
             Debug.Log("Gravity: " + levelData.gravity);
             SpawnObjects(levelData);
+            playerController.forwardSpeed = levelData.forwardSpeed;
+            playerController.thrustForce = levelData.thrustSpeed;
+            Physics.gravity = levelData.gravity;
+            Debug.Log(levelData.forwardSpeed);
+            Debug.Log(levelData.thrustSpeed);
         }
     }
 
+ 
+       
+    
     private void SpawnObjects(LevelData levelData)
     {
         // Clear previous objects
