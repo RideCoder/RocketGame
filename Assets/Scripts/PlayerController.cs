@@ -1,28 +1,29 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
 
 public class PlayerController : MonoBehaviour
 {
     Vector2 MousePos;
 
+    [Header("References")]
     public GameObject rocket;
-    private Rigidbody rb;
-    private ConstantForce propulsion;
-
     public ParticleSystem particleSystem;
     public AudioSource audio;
 
     [Header("Movement")]
-    public float forwardSpeed = 3f;   // CONSTANT Geometry Dash speed
-    public float thrustForce = 1200f;    // Upward force when holding input
+    public float forwardSpeed = 3f;      // Constant GD speed
+    public float thrustForce = 1200f;    // Local-space thrust
 
-    private void Start()
+    Rigidbody rb;
+    ConstantForce propulsion;
+
+    bool thrusting;
+
+    void Start()
     {
         rb = rocket.GetComponent<Rigidbody>();
         propulsion = rocket.GetComponent<ConstantForce>();
 
-      //  rb.useGravity = false;
         rb.maxLinearVelocity = Mathf.Infinity;
     }
 
@@ -30,59 +31,50 @@ public class PlayerController : MonoBehaviour
     {
         if (UIManager.IsPaused || GameManager.playerDead)
         {
-            propulsion.relativeForce = Vector3.zero;
+            thrusting = false;
             particleSystem.enableEmission = false;
             audio.mute = true;
             return;
         }
 
-        // Thrust (hold to go up)
-     
-        //Add this later to if statement
-        //OptionsMenu.buttons[OptionsMenu.boostInputIndex].isPressed
-        if (Mouse.current.leftButton.isPressed)
-        {
-            propulsion.relativeForce = new Vector3(0f, thrustForce, 0f);
-            particleSystem.enableEmission = true;
-            audio.mute = false;
-        }
-        else
-        {
-            propulsion.relativeForce = Vector3.zero;
-            particleSystem.enableEmission = false;
-            audio.mute = true;
-        }
+        // INPUT (frame-based is fine)
+        thrusting = Mouse.current.leftButton.isPressed;
 
-        // Rotation (your existing mouse-based rotation)
+        // Visuals
+        particleSystem.enableEmission = thrusting;
+        audio.mute = !thrusting;
+
+        // Rotation (visual & orientation)
         MousePos = Mouse.current.position.ReadValue();
-        float normalizedMouseX = MousePos.x / Screen.width;
-        float normalizedMouseY = MousePos.y / Screen.height;
-        
-        Quaternion target = Quaternion.Euler(
-            (1f - normalizedMouseY) * 360f - 90f,
-            normalizedMouseX * 360f - 180f,
+        float nx = MousePos.x / Screen.width;
+        float ny = MousePos.y / Screen.height;
+
+        rocket.transform.rotation = Quaternion.Euler(
+            (1f - ny) * 360f - 90f,
+            nx * 360f - 180f,
             0f
         );
-       // float yaw = normalizedMouseX * 180f - 90f; // range -90 to +90
-       // float pitch = (1f - normalizedMouseY) * 180f;
-
-        // Clamp pitch if desired
-      //  pitch = Mathf.Clamp(pitch, 0f, 180f);
-
-       // Quaternion target = Quaternion.Euler(pitch, yaw, 0f);
-
-        rocket.transform.rotation = target;
-        rb.angularVelocity = Vector3.zero;
     }
 
     void FixedUpdate()
     {
         if (UIManager.IsPaused || GameManager.playerDead)
+        {
+            propulsion.relativeForce = Vector3.zero;
             return;
+        }
 
-        // FORCE constant forward speed (Geometry Dash behavior)
-        Vector3 velocity = rb.linearVelocity;
-        velocity.z = forwardSpeed;
-        rb.linearVelocity = velocity;
+        // LOCAL-space thrust (same behavior as before)
+        propulsion.relativeForce = thrusting
+            ? new Vector3(0f, thrustForce, 0f)
+            : Vector3.zero;
+
+        // Constant forward speed
+        Vector3 v = rb.linearVelocity;
+        v.z = forwardSpeed;
+        rb.linearVelocity = v;
+
+        // Kill angular drift
+        rb.angularVelocity = Vector3.zero;
     }
 }
