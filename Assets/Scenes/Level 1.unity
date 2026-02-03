@@ -46726,7 +46726,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 450106729361206654, guid: 0296054ca41208e489646202fd896e07, type: 3}
       propertyPath: m_IsKinematic
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1119446424567750260, guid: 0296054ca41208e489646202fd896e07, type: 3}
       propertyPath: ShapeModule.m_Scale.x
@@ -46882,6 +46882,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8041266727870438677, guid: 0296054ca41208e489646202fd896e07, type: 3}
       propertyPath: TrailModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8041266727870438677, guid: 0296054ca41208e489646202fd896e07, type: 3}
+      propertyPath: InitialModule.size3D
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8041266727870438677, guid: 0296054ca41208e489646202fd896e07, type: 3}
