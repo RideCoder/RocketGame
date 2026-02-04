@@ -11,6 +11,9 @@ public class PropertiesHandler : MonoBehaviour
     public GameObject lightProperties;
     public GameObject solidObjectProperties;
     public GameObject speedChangeProperties;
+    public GameObject bloomObjectProperties;
+    public GameObject colorAdjustmentObjectProperties;
+    
 
     public void OpenProperties()
     {
@@ -63,6 +66,14 @@ public class PropertiesHandler : MonoBehaviour
         if (type == typeof(SpeedChangeObject))
         {
             speedChangeProperties.SetActive(true);
+        }
+        if (type == typeof(BloomObject))
+        {
+            bloomObjectProperties.SetActive(true);
+        }
+        if (type == typeof(ColorAdjustmentObject))
+        {
+            colorAdjustmentObjectProperties.SetActive(true);
         }
         Debug.Log($"Opening properties for type: {type.Name}");
 
