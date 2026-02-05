@@ -37,17 +37,20 @@ public class LevelSerializer : MonoBehaviour
 
         level.gravity = gravity;
         int speed = 15;
+        level.forwardSpeed = speed;
+
         if (forwardSpeedField != null && int.TryParse(forwardSpeedField.text, out speed))
         {
             level.forwardSpeed = speed;
         }
 
         int thrust = 30;
+        level.thrustSpeed = thrust;
         if (thrustSpeedField != null && int.TryParse(thrustSpeedField.text, out thrust))
         {
             level.thrustSpeed = thrust;
         }
-
+        Debug.Log(level.thrustSpeed);
 
         List<LevelObjectData> objects = new();
 
@@ -93,12 +96,40 @@ public class LevelSerializer : MonoBehaviour
     /// </summary>
     public string SerializeToJson()
     {
+
         LevelData level = new LevelData();
         level.levelName = inputField.text;
         levelName = level.levelName;
-        level.gravity = new Vector3(0f, -9.81f, 0f);
+        Vector3 gravity = new Vector3(0f, -9.81f, 0f);
+        if (inputGravityFieldX != null &&
+            inputGravityFieldY != null &&
+            inputGravityFieldZ != null &&
+            float.TryParse(inputGravityFieldX.text, out float gx) &&
+            float.TryParse(inputGravityFieldY.text, out float gy) &&
+            float.TryParse(inputGravityFieldZ.text, out float gz))
+        {
+            gravity = new Vector3(gx, gy, gz);
+        }
+
+        level.gravity = gravity;
+        int speed = 15;
+        level.forwardSpeed = speed;
+
+        if (forwardSpeedField != null && int.TryParse(forwardSpeedField.text, out speed))
+        {
+            level.forwardSpeed = speed;
+        }
+
+        int thrust = 30;
+        level.thrustSpeed = thrust;
+        if (thrustSpeedField != null && int.TryParse(thrustSpeedField.text, out thrust))
+        {
+            level.thrustSpeed = thrust;
+        }
+        Debug.Log(level.thrustSpeed);
 
         List<LevelObjectData> objects = new();
+
         foreach (Transform child in levelParent)
         {
             LevelObject lo = child.GetComponent<LevelObject>();
