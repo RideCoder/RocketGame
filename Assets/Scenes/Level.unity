@@ -1030,6 +1030,7 @@ MonoBehaviour:
   levelObjects: []
   loadLevel: 
   spawnPosition: {x: 0, y: 0, z: 0}
+  playerController: {fileID: 1631292094}
 --- !u!4 &498625557
 Transform:
   m_ObjectHideFlags: 0
@@ -2201,6 +2202,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0296054ca41208e489646202fd896e07, type: 3}
+--- !u!114 &1631292094 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1229200210232778198, guid: 0296054ca41208e489646202fd896e07, type: 3}
+  m_PrefabInstance: {fileID: 1631292093}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7da30c668eae864593e0404006dc82f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
 --- !u!1 &1664061348 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4481552609192192122, guid: 32adf4eb20bcf0441ac7cd902f7a258e, type: 3}
