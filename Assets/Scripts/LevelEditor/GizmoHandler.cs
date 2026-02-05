@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.ProBuilder.Shapes;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 using static UnityEngine.UI.Image;
 
@@ -116,7 +117,7 @@ public class GizmoHandler : MonoBehaviour
     {
         Debug.Log("Gizmo Selected");
         gizmoSelected = gizmo;
-
+        
         // MOVE
         if (mode == 0)
         {
@@ -292,7 +293,10 @@ public class GizmoHandler : MonoBehaviour
 
 
         if (gizmoSelected == null) return;
-
+        if (Keyboard.current.leftCtrlKey.isPressed)
+        {
+            return;
+        }
         // Center gizmo on selected objects
         Vector3 avgPos = Vector3.zero;
         foreach (GameObject obj in LevelEditorController.targetObjects)

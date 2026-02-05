@@ -1,5 +1,6 @@
 using LootLocker.Requests;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using TMPro;
@@ -14,7 +15,43 @@ public class LoadOnlineLevels : MonoBehaviour
     public GameObject levelsList;
     public GameObject button;
     public static string LevelJson;
+    public TMP_InputField inputField;
+    public string searchField;
+    public Button search;
+    public Button nextPage;
+    public Button previousPage;
+    public List<GameObject> levels = new List<GameObject>();
+    public void GetLevels()
+    {
+        LootLockerSDKManager.GetAssetNextList(10, (listResponse) =>
+        {
+            if (!listResponse.success)
+            {
+                Debug.LogError("Failed to get asset list");
+                return;
+            }
 
+            foreach (var asset in listResponse.assets)
+            {
+                Debug.Log($"Asset name: {asset.name}");
+                Debug.Log($"Asset id: {asset.id}");
+
+
+                GameObject clone = Instantiate(button);
+
+                clone.transform.parent = levelsList.transform;
+
+                clone.transform.GetChild(0).GetComponent<TMP_Text>().text = asset.name;
+
+                clone.GetComponent<Button>().onClick.AddListener(() => StartCoroutine(LoadCustomLevel(asset.id)));
+                levels.Add(clone);
+
+
+
+            }
+        });
+
+    }
     void Start()
     {
         LevelJson = null;
@@ -45,15 +82,16 @@ public class LoadOnlineLevels : MonoBehaviour
 
 
                 GameObject clone = Instantiate(button);
-             
+
                 clone.transform.parent = levelsList.transform;
 
                 clone.transform.GetChild(0).GetComponent<TMP_Text>().text = asset.name;
 
                 clone.GetComponent<Button>().onClick.AddListener(() => StartCoroutine(LoadCustomLevel(asset.id)));
+                levels.Add(clone);
 
 
-               
+
             }
         });
 
@@ -88,7 +126,14 @@ public class LoadOnlineLevels : MonoBehaviour
     }
 
 
-
+    public void NextPage()
+    {
+        foreach (var button in levels)
+        {
+            Destroy(button.gameObject);
+        }
+        GetLevels();
+    }
 
 
 

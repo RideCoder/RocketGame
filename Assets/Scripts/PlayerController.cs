@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     public float forwardSpeed = 3f;      // Constant GD speed
     public float thrustForce = 1200f;    // Local-space thrust
 
-    Rigidbody rb;
+    public Rigidbody rb;
     ConstantForce propulsion;
 
     bool thrusting;
