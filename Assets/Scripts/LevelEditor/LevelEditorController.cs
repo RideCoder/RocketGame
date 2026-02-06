@@ -334,12 +334,13 @@ public class LevelEditorController : MonoBehaviour
     {
       //  GizmoHandler.GizmoUnselected();
         positionGizmo.SetActive(false);
-
+        
         foreach (GameObject obj in targetObjects)
             if (obj != null)
                 obj.layer = obj.GetComponent<LevelObject>().mask;
 
         targetObjects.Clear();
+        GizmoHandler.gizmoSelected = null;
         NotifyTargetObjectsUpdated();
     }
 
