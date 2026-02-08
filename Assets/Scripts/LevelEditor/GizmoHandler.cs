@@ -87,16 +87,18 @@ public class GizmoHandler : MonoBehaviour
             {
         snapEnabled = true;
         OnModeSwitch?.Invoke(mode);
-        plane1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                plane1.layer = LayerMask.NameToLayer("Plane");
-                MakeTransparent(plane1);
-                plane1.SetActive(false);
+        if (plane1 == null && plane2 == null)
+        {
+            plane1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            plane1.layer = LayerMask.NameToLayer("Plane");
+            // MakeTransparent(plane1);
+            plane1.SetActive(false);
 
-                plane2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                plane2.layer = LayerMask.NameToLayer("Plane");
-                MakeTransparent(plane2);
-                plane2.SetActive(false);
-
+            plane2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            plane2.layer = LayerMask.NameToLayer("Plane");
+            // MakeTransparent(plane2);
+            plane2.SetActive(false);
+        }
                 foreach (TMP_Text text in editorButtons)
                 {
                     text.color = Color.white;
@@ -231,7 +233,8 @@ public class GizmoHandler : MonoBehaviour
             Snap(value.z, origin.z)
         );
     }
-    private GameObject currentHoveredGizmo;
+    public GameObject currentHoveredGizmo;
+    
     private Vector3 originalScale;
     [SerializeField] private float hoverScaleMultiplier = 1.2f;
     public void HoverOverGizmo(GameObject gizmo)
