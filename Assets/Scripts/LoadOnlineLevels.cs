@@ -13,7 +13,7 @@ public class LoadOnlineLevels : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public GameObject levelsList;
-    public GameObject button;
+    public GameObject levelUI;
     public static string LevelJson;
     public TMP_InputField inputField;
     public string searchField;
@@ -37,13 +37,13 @@ public class LoadOnlineLevels : MonoBehaviour
                 Debug.Log($"Asset id: {asset.id}");
 
 
-                GameObject clone = Instantiate(button);
+                GameObject clone = Instantiate(levelUI);
 
                 clone.transform.parent = levelsList.transform;
 
                 clone.transform.GetChild(0).GetComponent<TMP_Text>().text = asset.name;
 
-                clone.GetComponent<Button>().onClick.AddListener(() => StartCoroutine(LoadCustomLevel(asset.id)));
+                clone.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => StartCoroutine(LoadCustomLevel(asset.id)));
                 levels.Add(clone);
 
 
@@ -81,13 +81,13 @@ public class LoadOnlineLevels : MonoBehaviour
                 Debug.Log($"Asset id: {asset.id}");
 
 
-                GameObject clone = Instantiate(button);
+                GameObject clone = Instantiate(levelUI);
 
                 clone.transform.parent = levelsList.transform;
 
                 clone.transform.GetChild(0).GetComponent<TMP_Text>().text = asset.name;
 
-                clone.GetComponent<Button>().onClick.AddListener(() => StartCoroutine(LoadCustomLevel(asset.id)));
+                clone.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => StartCoroutine(LoadCustomLevel(asset.id)));
                 levels.Add(clone);
 
 

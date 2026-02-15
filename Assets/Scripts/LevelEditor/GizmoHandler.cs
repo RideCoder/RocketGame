@@ -89,6 +89,7 @@ public class GizmoHandler : MonoBehaviour
         OnModeSwitch?.Invoke(mode);
         if (plane1 == null && plane2 == null)
         {
+            Debug.Log("TEST");
             plane1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
             plane1.layer = LayerMask.NameToLayer("Plane");
             // MakeTransparent(plane1);
